@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <title>FixIt | Smartphone Repair Kiosk</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: { primary: '#2563eb' }
+                }
+            }
+        }
+    </script>
+    <script>
+    // tailwind.config = {
+    //     darkMode: 'class', // This is the missing piece!
+    // }
+</script>
+    <style>
+        .transition-all-custom { transition: all 0.3s ease-in-out; }
+        .glass { backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+        .img-card:hover img { transform: scale(1.05); }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-900 dark:text-slate-100 min-h-screen font-sans transition-all-custom">
+
+  <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-900/80 border-b dark:border-slate-800 glass">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-20 items-center">
+            
+            <a href="index.html" class="flex items-center gap-2">
+                <div class="bg-primary p-2 rounded-xl shadow-lg shadow-blue-500/30">
+                    <i data-lucide="smartphone" class="text-white w-6 h-6"></i>
+                </div>
+                <span class="text-2xl font-black tracking-tighter dark:text-white">FIX<span class="text-primary">IT</span></span>
+            </a>
+
+            <div class="hidden lg:flex space-x-8 rtl:space-x-reverse items-center">
+                <a href="index.html" class="nav-link font-semibold transition hover:text-primary">Home</a>
+                 <a href="home2.html" class="nav-link font-semibold transition hover:text-primary">Home2</a>
+                <a href="booknow.html" class="nav-link font-semibold transition hover:text-primary">Book Now</a>
+                 <a href="aboutus.html" class="nav-link font-semibold transition hover:text-primary">About Us</a>
+                <a href="service.html" class="nav-link font-semibold transition hover:text-primary">Services</a>
+                <!-- <a href="#gallery" class="nav-link font-semibold transition hover:text-primary">Gallery</a> -->
+                <a href="pricing.html" class="nav-link font-semibold transition hover:text-primary">Pricing</a>
+                <a href="contact.html" class="nav-link font-semibold transition hover:text-primary">Contact</a>
+                
+                            
+                <div class="relative">
+    <button onclick="toggleDropdown(event)" 
+            class="flex items-center gap-1 font-semibold hover:text-primary py-2 dark:text-slate-200 transition-colors focus:outline-none"
+            id="dashboard-btn">
+        Dashboard <i data-lucide="chevron-down" id="dropdown-icon" class="w-4 h-4 transition-transform duration-300"></i>
+    </button>
+    
+    <div id="dashboard-menu" 
+         class="absolute right-0 mt-2 w-56 bg-white dark:bg-slate-900 border dark:border-slate-800 rounded-[1.2rem] shadow-2xl hidden opacity-0 translate-y-2 transition-all duration-300 overflow-hidden z-[100]">
+        
+        <div class="p-2 space-y-1">
+            <a href="user.html" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:text-primary transition-all font-medium dark:text-slate-200">
+                <i data-lucide="user" class="w-4 h-4"></i> Profile Settings
+            </a>
+            
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleDropdown(event) {
+        // Prevent click from bubbling up to the window listener
+        event.stopPropagation();
+        
+        const menu = document.getElementById('dashboard-menu');
+        const icon = document.getElementById('dropdown-icon');
+        const isHidden = menu.classList.contains('hidden');
+
+        if (isHidden) {
+            // Open Menu
+            menu.classList.remove('hidden');
+            // Small delay to allow transition
+            setTimeout(() => {
+                menu.classList.remove('opacity-0', 'translate-y-2');
+                icon.classList.add('rotate-180');
+            }, 10);
+        } else {
+            // Close Menu
+            closeDropdown();
+        }
+    }
+
+    function closeDropdown() {
+        const menu = document.getElementById('dashboard-menu');
+        const icon = document.getElementById('dropdown-icon');
+        
+        menu.classList.add('opacity-0', 'translate-y-2');
+        icon.classList.remove('rotate-180');
+        
+        // Hide after animation finishes
+        setTimeout(() => {
+            menu.classList.add('hidden');
+        }, 300);
+    }
+
+    // Close menu when clicking anywhere else on the screen
+    window.addEventListener('click', function(e) {
+        const menu = document.getElementById('dashboard-menu');
+        const btn = document.getElementById('dashboard-btn');
+        
+        if (!menu.contains(e.target) && !btn.contains(e.target)) {
+            closeDropdown();
+        }
+    });
+
+    // Refresh icons
+    if (window.lucide) lucide.createIcons();
+</script>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <button onclick="toggleTheme()" class="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-blue-400 hover:scale-110 transition">
+                    <i data-lucide="sun" id="sun-icon" class="hidden"></i>
+                    <i data-lucide="moon" id="moon-icon"></i>
+                </button>
+                <button onclick="toggleDirection()" class="hidden md:flex items-center justify-between gap-3 bg-slate-100 dark:bg-slate-800 rounded-2xl font-bold transition-all active:scale-95 px-3 py-2 text-sm lg:hover:ring-2 lg:hover:ring-primary/50">
+                    <i data-lucide="languages" class="w-4 h-4 text-primary"></i>
+                    <span id="dir-label" class="bg-primary text-white text-[10px] px-2 py-0.5 rounded-full uppercase">LTR</span>
+                </button>
+                <a href="login.html">
+                 <button class="hidden lg:block bg-primary text-white px-6 py-2.5 rounded-xl font-bold hover:bg-blue-700 shadow-lg shadow-blue-500/20 transition">Register</button>
+
+                </a>
+                <button onclick="toggleMobileMenu()" class="lg:hidden p-2 dark:text-white">
+                    <i data-lucide="menu" id="menu-icon" class="w-7 h-7"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="mobile-menu" class="hidden lg:hidden bg-white dark:bg-slate-900 border-t dark:border-slate-800 px-4 py-8 space-y-4 max-h-screen overflow-y-auto">
+    
+    <div class="flex gap-3 px-2 mb-4">
+        <button onclick="toggleTheme()" class="flex-1 flex items-center justify-center gap-3 p-4 bg-slate-100 dark:bg-slate-800 rounded-2xl font-bold transition-all active:scale-95 border border-transparent dark:border-slate-700">
+            <div class="flex items-center gap-2">
+                <i data-lucide="sun" class="sun-icon w-5 h-5 text-amber-500 hidden"></i>
+                <i data-lucide="moon" class="moon-icon w-5 h-5 text-blue-400"></i>
+                <span class="dark:text-white text-sm">Mode</span>
+            </div>
+        </button>
+
+        <button onclick="toggleDirection()" class="flex-1 flex items-center justify-center gap-3 p-4 bg-slate-100 dark:bg-slate-800 rounded-2xl font-bold transition-all active:scale-95 border border-transparent dark:border-slate-700">
+            <div class="flex items-center gap-2">
+                <i data-lucide="languages" class="w-5 h-5 text-primary"></i>
+                <span class="dir-status-label bg-primary text-white text-[10px] px-2 py-0.5 rounded-md uppercase font-black">LTR</span>
+            </div>
+        </button>
+    </div>
+
+    <div class="space-y-1">
+        <a href="index.html" class="nav-link-mob block text-xl font-bold px-4 py-3 rounded-xl border-b dark:border-slate-800 dark:text-white">Home</a>
+        <a href="home2.html" class="nav-link-mob block text-xl font-bold px-4 py-3 rounded-xl border-b dark:border-slate-800 dark:text-white">Home2</a>
+        <a href="booknow.html" class="nav-link-mob block text-xl font-bold px-4 py-3 rounded-xl border-b dark:border-slate-800 dark:text-white text-primary">Book Now</a>
+        <a href="aboutus.html" class="nav-link-mob block text-xl font-bold px-4 py-3 rounded-xl border-b dark:border-slate-800 dark:text-white">About Us</a>
+        <a href="service.html" class="nav-link-mob block text-xl font-bold px-4 py-3 rounded-xl border-b dark:border-slate-800 dark:text-white">Services</a>
+        <a href="pricing.html" class="nav-link-mob block text-xl font-bold px-4 py-3 rounded-xl border-b dark:border-slate-800 dark:text-white">Pricing</a>
+        <a href="contact.html" class="nav-link-mob block text-xl font-bold px-4 py-3 rounded-xl border-b dark:border-slate-800 dark:text-white">Contact</a>
+    </div>
+
+    <div class="bg-slate-50 dark:bg-slate-800/50 p-4 rounded-2xl border dark:border-slate-700">
+        <button onclick="document.getElementById('mob-dash').classList.toggle('hidden')" class="w-full flex justify-between items-center font-bold dark:text-white">
+            User Dashboard <i data-lucide="chevron-down" class="w-5 h-5"></i>
+        </button>
+        <div id="mob-dash" class="hidden pt-4 space-y-4 pl-4 border-l-2 border-primary mt-2">
+            <a href="user.html" class="nav-link-mob block text-slate-500 dark:text-slate-400">Account Info</a>
+        </div>
+    </div>
+
+    <a href="login.html" class="block">
+        <button class="w-full bg-primary text-white py-4 rounded-2xl font-bold text-lg shadow-lg shadow-blue-500/20 mt-4 active:scale-95 transition-transform">Register</button>
+    </a>
+</div>
+</nav>
+<style>
+    /* Styling for the Active Mobile Link */
+.nav-link-mob.active {
+    background-color: rgba(37, 99, 235, 0.1); /* Light blue bg */
+    color: #2563eb !important; /* Primary blue text */
+    border-left: 4px solid #2563eb;
+    padding-left: 1rem; /* Adjust padding to account for border */
+}
+
+/* Dark mode adjustment for active link */
+.dark .nav-link-mob.active {
+    background-color: rgba(37, 99, 235, 0.2);
+    color: #60a5fa !important;
+}
+    /* Active state styling */
+.nav-link.active {
+    color: #2563eb !important; /* Your primary blue */
+    position: relative;
+}
+
+/* Optional: Add a small dot or underline to the active link */
+.nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 4px;
+    background-color: #2563eb;
+    border-radius: 50%;
+}
+</style>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+    // 1. Get current page name (e.g., "service.html")
+    const currentPath = window.location.pathname.split("/").pop();
+    
+    // 2. Default to index.html if path is empty (root)
+    const activePage = currentPath === "" ? "index.html" : currentPath;
+
+    // 3. Select all mobile nav links
+    const mobileLinks = document.querySelectorAll('.nav-link-mob');
+
+    mobileLinks.forEach(link => {
+        // Get the href attribute of the link
+        const linkHref = link.getAttribute('href');
+
+        // 4. Compare and add active class
+        if (linkHref === activePage) {
+            link.classList.add('active');
+            
+            // If the link is inside the Dashboard dropdown, open the dropdown automatically
+            const parentDropdown = link.closest('#mob-dash');
+            if (parentDropdown) {
+                parentDropdown.classList.remove('hidden');
+            }
+        }
+    });
+});
+    document.addEventListener("DOMContentLoaded", function() {
+    // Get the current page URL path
+    const currentPath = window.location.pathname;
+
+    // Select all desktop and mobile navigation links
+    const allLinks = document.querySelectorAll('.nav-link, .nav-link-mob');
+
+    allLinks.forEach(link => {
+        // Get the href attribute
+        const linkPath = link.getAttribute('href');
+
+        // Check if the current URL ends with the link's href
+        // We use endsWith to handle cases like 'domain.com/index.html' vs 'index.html'
+        if (currentPath.endsWith(linkPath) || (currentPath === '/' && linkPath === '/index.html')) {
+            link.classList.add('active');
+            
+            // For mobile menu active items, maybe add a background
+            if(link.classList.contains('nav-link-mob')) {
+                link.classList.add('bg-blue-50', 'dark:bg-blue-900/20', 'text-primary');
+            }
+        }
+    });
+});
+</script>
+<script>
+    function setActiveLink() {
+    const currentHash = window.location.hash || '/aboutus.html';
+    
+    // Update Desktop Links
+    document.querySelectorAll('.nav-link').forEach(link => {
+        if (link.getAttribute('href') === currentHash) {
+            link.classList.add('text-primary');
+            link.classList.remove('text-slate-400', 'dark:text-slate-200');
+        } else {
+            link.classList.remove('text-primary');
+            link.classList.add('text-slate-400');
+        }
+    });
+
+    // Update Mobile Links
+    document.querySelectorAll('.nav-link-mob').forEach(link => {
+        if (link.getAttribute('href') === currentHash) {
+            link.classList.add('bg-blue-50', 'text-primary', 'dark:bg-primary/10');
+        } else {
+            link.classList.remove('bg-blue-50', 'text-primary', 'dark:bg-primary/10');
+        }
+    });
+}
+
+// Listen for hash changes and page load
+window.addEventListener('hashchange', setActiveLink);
+window.addEventListener('load', setActiveLink);
+
+// Add this to your toggleMobileMenu function to close menu after clicking a link
+document.querySelectorAll('.nav-link-mob').forEach(link => {
+    link.addEventListener('click', () => {
+        document.getElementById('mobile-menu').classList.add('hidden');
+        // Reset icon to menu
+        const icon = document.getElementById('menu-icon');
+        icon.setAttribute('data-lucide', 'menu');
+        lucide.createIcons();
+    });
+});
+</script>
+<section id="home" class="relative pt-24 pb-20 lg:pt-40 lg:pb-32 overflow-hidden bg-white dark:bg-slate-950 transition-colors duration-500">
+    
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-full opacity-20 pointer-events-none">
+        <div class="absolute top-0 left-0 w-96 h-96 bg-blue-500 rounded-full blur-[120px] animate-pulse"></div>
+        <div class="absolute bottom-0 right-0 w-96 h-96 bg-indigo-500 rounded-full blur-[120px] delay-700 animate-pulse"></div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="text-center max-w-4xl mx-auto">
+            
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 text-xs font-bold mb-8 animate-bounce">
+                <span class="flex h-2 w-2 rounded-full bg-green-500"></span>
+                Technician Online & Ready
+            </div>
+
+            <h1 class="text-6xl md:text-8xl font-black tracking-tight leading-[0.9] mb-8 dark:text-white">
+                WE REVIVE <br>
+                <span class="bg-gradient-to-r from-blue-600 via-indigo-500 to-blue-600 bg-clip-text text-transparent bg-[length:200%_auto] animate-gradient">YOUR DIGITAL LIFE.</span>
+            </h1>
+
+            <p class="text-xl text-slate-500 dark:text-slate-400 mb-12 max-w-2xl mx-auto leading-relaxed">
+                The most advanced smartphone repair kiosk in the city. Professional grade tools, OEM parts, and a <span class="text-blue-600 font-bold">30-minute guarantee</span>—all while you shop.
+            </p>
+
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-20">
+               <a href="booknow.html">
+<button class="group relative px-10 py-5 bg-blue-600 text-white rounded-2xl font-black text-xl overflow-hidden transition-all hover:scale-105 active:scale-95 shadow-2xl shadow-blue-500/20">
+                    <span class="relative z-10 flex items-center gap-2">
+                        BOOK REPAIR <i data-lucide="arrow-right" class="w-6 h-6 group-hover:translate-x-1 transition-transform"></i>
+                    </span>
+                    <div class="absolute inset-0 bg-gradient-to-r from-indigo-600 to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                </button>
+               </a>
+              <a href="pricing.html">
+ <button class="px-10 py-5 bg-transparent text-slate-900 dark:text-white border-2 border-slate-200 dark:border-slate-800 rounded-2xl font-black text-xl hover:bg-slate-50 dark:hover:bg-slate-900 transition-all">
+                    VIEW PRICING
+                </button>
+              </a>  
+               
+            </div>
+
+            
+        </div>
+    </div>
+</section>
+
+<style>
+    /* Custom Animations for Design Option 2 */
+    @keyframes gradient {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+    .animate-gradient { background-size: 200% auto; animation: gradient 4s linear infinite; }
+
+    .perspective-1000 { perspective: 1000px; }
+    .rotate-x-6 { transform: rotateX(6deg); }
+
+    @keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-20px); }
+    }
+    .animate-float { animation: float 5s ease-in-out infinite; }
+    .animate-float-delayed { animation: float 5s ease-in-out infinite; animation-delay: 2.5s; }
+</style>
+
+<script>
+    // Refresh Icons for the new section
+    lucide.createIcons();
+</script>
+<section id="about" class="py-20 bg-white dark:bg-slate-900 transition-colors duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="grid lg:grid-cols-2 gap-16 items-center mb-32">
+            <div class="relative group">
+                <div class="absolute -inset-4 bg-primary/20 rounded-[3rem] blur-2xl group-hover:bg-primary/30 transition duration-500"></div>
+                <img src="assets/abtimg" 
+                     alt="Our Workshop" 
+                     class="relative rounded-[2.5rem] shadow-2xl object-cover w-full h-[400px] transition-transform duration-500 group-hover:scale-[1.02]">
+            </div>
+            <div>
+                <h2 class="text-4xl md:text-6xl font-black mb-6 dark:text-white">Our <span class="text-primary">Story</span></h2>
+                <p class="text-lg text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
+                    Founded in 2020, FixIt began with a simple observation: people shouldn't have to part with their phones for days just for a simple screen fix. 
+                </p>
+                <p class="text-lg text-slate-600 dark:text-slate-400 leading-relaxed">
+                    We brought the repair shop to where you already are—the mall. Today, our kiosks serve thousands of customers monthly, providing professional-grade repairs in the time it takes to grab a coffee.
+                </p>
+            </div>
+        </div>
+
+        <div class="mb-32">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-5xl font-black mb-4 dark:text-white">The FixIt Process</h2>
+                <p class="text-slate-500">Transparent. Fast. Reliable.</p>
+            </div>
+            <div class="grid md:grid-cols-4 gap-8">
+                <div class="relative text-center group">
+                    <div class="w-16 h-16 bg-primary text-white rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl shadow-primary/20 group-hover:scale-110 transition">
+                        <span class="text-2xl font-black">1</span>
+                    </div>
+                    <h4 class="font-bold text-lg mb-2 dark:text-white">Quick Diagnosis</h4>
+                    <p class="text-sm text-slate-500">We test your device to find the exact issue.</p>
+                    <div class="hidden md:block absolute top-8 left-full w-full border-t-2 border-dashed border-slate-200 dark:border-slate-700 -z-10"></div>
+                </div>
+                <div class="relative text-center group">
+                    <div class="w-16 h-16 bg-primary text-white rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl shadow-primary/20 group-hover:scale-110 transition">
+                        <span class="text-2xl font-black">2</span>
+                    </div>
+                    <h4 class="font-bold text-lg mb-2 dark:text-white">Instant Quote</h4>
+                    <p class="text-sm text-slate-500">Fixed pricing. No hidden extra charges.</p>
+                    <div class="hidden md:block absolute top-8 left-full w-full border-t-2 border-dashed border-slate-200 dark:border-slate-700 -z-10"></div>
+                </div>
+                <div class="relative text-center group">
+                    <div class="w-16 h-16 bg-primary text-white rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl shadow-primary/20 group-hover:scale-110 transition">
+                        <span class="text-2xl font-black">3</span>
+                    </div>
+                    <h4 class="font-bold text-lg mb-2 dark:text-white">Expert Repair</h4>
+                    <p class="text-sm text-slate-500">30-minute fix using OEM-quality parts.</p>
+                    <div class="hidden md:block absolute top-8 left-full w-full border-t-2 border-dashed border-slate-200 dark:border-slate-700 -z-10"></div>
+                </div>
+                <div class="text-center group">
+                    <div class="w-16 h-16 bg-green-500 text-white rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl shadow-green-500/20 group-hover:scale-110 transition">
+                        <i data-lucide="check" class="w-8 h-8"></i>
+                    </div>
+                    <h4 class="font-bold text-lg mb-2 dark:text-white">Final Testing</h4>
+                    <p class="text-sm text-slate-500">Full QC check before handing it back.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="p-8 bg-blue-600 text-white rounded-[2.5rem] shadow-xl hover:-translate-y-2 transition-all">
+                <i data-lucide="target" class="w-12 h-12 mb-6 opacity-80"></i>
+                <h3 class="text-2xl font-bold mb-4">Our Mission</h3>
+                <p class="opacity-90 leading-relaxed">To provide the most accessible, honest, and high-quality electronics repair service in every major city center.</p>
+            </div>
+            
+            <div class="p-8 bg-slate-100 dark:bg-slate-800 rounded-[2.5rem] shadow-sm hover:shadow-xl transition-all border dark:border-slate-700">
+                <i data-lucide="shield-check" class="w-12 h-12 mb-6 text-primary"></i>
+                <h3 class="text-2xl font-bold mb-4 dark:text-white">Warranty Promise</h3>
+                <p class="text-slate-500 dark:text-slate-400 leading-relaxed">We back our parts and labor with a 90-day peace-of-mind warranty. If it's not right, we fix it for free.</p>
+            </div>
+
+            <div class="p-8 bg-slate-100 dark:bg-slate-800 rounded-[2.5rem] shadow-sm hover:shadow-xl transition-all border dark:border-slate-700">
+                <i data-lucide="award" class="w-12 h-12 mb-6 text-primary"></i>
+                <h3 class="text-2xl font-bold mb-4 dark:text-white">Certified Team</h3>
+                <p class="text-slate-500 dark:text-slate-400 leading-relaxed">Our technicians undergo rigorous testing and certification for Apple, Samsung, and Google hardware.</p>
+            </div>
+            <div class="group p-8 bg-slate-100 dark:bg-slate-800 rounded-[2.5rem] shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 border border-transparent hover:border-primary/20">
+        <div class="w-16 h-16 bg-blue-500/10 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+            <i data-lucide="award" class="w-10 h-10 text-primary"></i>
+        </div>
+        <h3 class="text-2xl font-black mb-4 dark:text-white tracking-tight">Certified Team</h3>
+        <p class="text-slate-500 dark:text-slate-400 leading-relaxed text-sm">
+            Our technicians undergo rigorous testing and official certification for Apple, Samsung, and Google hardware.
+        </p>
+    </div>
+
+    <div class="group p-8 bg-slate-100 dark:bg-slate-800 rounded-[2.5rem] shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 border border-transparent hover:border-amber-500/20">
+        <div class="w-16 h-16 bg-amber-500/10 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+            <i data-lucide="zap" class="w-10 h-10 text-amber-500"></i>
+        </div>
+        <h3 class="text-2xl font-black mb-4 dark:text-white tracking-tight">Express Service</h3>
+        <p class="text-slate-500 dark:text-slate-400 leading-relaxed text-sm">
+            We value your time. 90% of our screen and battery repairs are completed in under 30 minutes at our local kiosks.
+        </p>
+    </div>
+
+    <div class="group p-8 bg-slate-100 dark:bg-slate-800 rounded-[2.5rem] shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 border border-transparent hover:border-emerald-500/20">
+        <div class="w-16 h-16 bg-emerald-500/10 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+            <i data-lucide="shield-check" class="w-10 h-10 text-emerald-500"></i>
+        </div>
+        <h3 class="text-2xl font-black mb-4 dark:text-white tracking-tight">Lifetime Warranty</h3>
+        <p class="text-slate-500 dark:text-slate-400 leading-relaxed text-sm">
+            We stand by our work. All repairs include a comprehensive warranty on parts and labor for your total peace of mind.
+        </p>
+    </div>
+        </div>
+    </div>
+</section>
+<section id="technicians" class="py-24 bg-white dark:bg-slate-900 transition-colors duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+            <div class="max-w-2xl">
+                <div class="max-w-4xl mx-auto lg:mx-0">
+    <h2 class="text-4xl md:text-6xl font-black mb-6 dark:text-white leading-tight text-center lg:text-left">
+        Expert Hands for <br><span class="text-blue-600">Your Devices.</span>
+    </h2>
+</div>
+                <p class="text-lg text-slate-500 dark:text-slate-400">
+                    Our team consists of Master Technicians certified by leading manufacturers. We don't just fix phones; we restore your digital life.
+                </p>
+            </div>
+            <div class="flex items-center gap-4 bg-blue-50 dark:bg-blue-900/20 p-6 rounded-3xl border border-blue-100 dark:border-blue-800">
+                <div class="text-4xl font-black text-blue-600">10k+</div>
+                <div class="text-sm font-bold uppercase tracking-widest leading-tight dark:text-slate-300">Repairs<br>Completed</div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            
+            <div class="group relative bg-slate-50 dark:bg-slate-800 rounded-[3rem] p-4 overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-transparent hover:border-blue-500/30">
+                <div class="relative h-80 rounded-[2.5rem] overflow-hidden mb-6">
+                    <img src="assets/p1" 
+                         alt="Lead Technician" 
+                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                    <div class="absolute top-4 right-4 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md px-4 py-2 rounded-2xl shadow-lg">
+                        <div class="flex items-center gap-2">
+                            <i data-lucide="award" class="text-yellow-500 w-4 h-4"></i>
+                            <span class="text-xs font-black uppercase">Master Tech</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="px-4 pb-4">
+                    <h3 class="text-2xl font-bold dark:text-white mb-1">Alex Rivera</h3>
+                    <p class="text-blue-600 font-bold text-sm mb-4 uppercase tracking-tighter">Apple & Samsung Specialist</p>
+                    
+                    <div class="space-y-3 mb-6">
+                        <div class="flex justify-between text-xs font-bold mb-1 opacity-60 dark:text-slate-400">
+                            <span>Micro-Soldering</span>
+                            <span>98%</span>
+                        </div>
+                        <div class="h-1.5 w-full bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+                            <div class="h-full bg-blue-600 w-[98%] group-hover:animate-pulse"></div>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-2">
+                        <span class="bg-white dark:bg-slate-900 border dark:border-slate-700 px-3 py-1 rounded-lg text-[10px] font-bold dark:text-slate-300">Level 4 Certified</span>
+                        <span class="bg-white dark:bg-slate-900 border dark:border-slate-700 px-3 py-1 rounded-lg text-[10px] font-bold dark:text-slate-300">8+ Years Exp.</span>
+                    </div>
+                </div>
+            </div>
+            <div class="group relative bg-slate-50 dark:bg-slate-800 rounded-[3rem] p-4 overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-transparent hover:border-blue-500/30">
+    <div class="relative h-80 rounded-[2.5rem] overflow-hidden mb-6">
+        <img src="assets/p3" 
+             alt="QA Expert" 
+             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+        <div class="absolute top-4 right-4 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md px-4 py-2 rounded-2xl shadow-lg">
+            <div class="flex items-center gap-2">
+                <i data-lucide="shield-check" class="text-blue-500 w-4 h-4"></i>
+                <span class="text-xs font-black uppercase">QA Expert</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="px-4 pb-4">
+        <h3 class="text-2xl font-bold dark:text-white mb-1">Sarah Chen</h3>
+        <p class="text-blue-600 font-bold text-sm mb-4 uppercase tracking-tighter">Hardware Diagnostics</p>
+        
+        <div class="space-y-3 mb-6">
+            <div class="flex justify-between text-xs font-bold mb-1 opacity-60 dark:text-slate-400">
+                <span>Diagnostic Speed</span>
+                <span>95%</span>
+            </div>
+            <div class="h-1.5 w-full bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+                <div class="h-full bg-blue-600 w-[95%] group-hover:animate-pulse"></div>
+            </div>
+        </div>
+
+        <div class="flex gap-2">
+            <span class="bg-white dark:bg-slate-900 border dark:border-slate-700 px-3 py-1 rounded-lg text-[10px] font-bold dark:text-slate-300">Logic Board Pro</span>
+            <span class="bg-white dark:bg-slate-900 border dark:border-slate-700 px-3 py-1 rounded-lg text-[10px] font-bold dark:text-slate-300">Water Damage Pro</span>
+        </div>
+    </div>
+</div>
+
+<div class="group relative bg-slate-50 dark:bg-slate-800 rounded-[3rem] p-4 overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-transparent hover:border-blue-500/30">
+    <div class="relative h-80 rounded-[2.5rem] overflow-hidden mb-6">
+        <img src="assets/p4" 
+             alt="Logic Board Expert" 
+             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+        <div class="absolute top-4 right-4 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md px-4 py-2 rounded-2xl shadow-lg">
+            <div class="flex items-center gap-2">
+                <i data-lucide="cpu" class="text-emerald-500 w-4 h-4"></i>
+                <span class="text-xs font-black uppercase">IC Specialist</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="px-4 pb-4">
+        <h3 class="text-2xl font-bold dark:text-white mb-1">Mark Davis</h3>
+        <p class="text-blue-600 font-bold text-sm mb-4 uppercase tracking-tighter">Board Repair & Data Recovery</p>
+        
+        <div class="space-y-3 mb-6">
+            <div class="flex justify-between text-xs font-bold mb-1 opacity-60 dark:text-slate-400">
+                <span>Success Rate</span>
+                <span>92%</span>
+            </div>
+            <div class="h-1.5 w-full bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+                <div class="h-full bg-blue-600 w-[92%] group-hover:animate-pulse"></div>
+            </div>
+        </div>
+
+        <div class="flex gap-2">
+            <span class="bg-white dark:bg-slate-900 border dark:border-slate-700 px-3 py-1 rounded-lg text-[10px] font-bold dark:text-slate-300">IPC Certified</span>
+            <span class="bg-white dark:bg-slate-900 border dark:border-slate-700 px-3 py-1 rounded-lg text-[10px] font-bold dark:text-slate-300">Lead Tech</span>
+        </div>
+    </div>
+</div>
+
+            <div class="group relative bg-slate-50 dark:bg-slate-800 rounded-[3rem] p-4 overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-transparent hover:border-blue-500/30">
+                <div class="relative h-80 rounded-[2.5rem] overflow-hidden mb-6">
+                    <img src="assets/p5" 
+                         alt="Lead Technician" 
+                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                    <div class="absolute top-4 right-4 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md px-4 py-2 rounded-2xl shadow-lg">
+                        <div class="flex items-center gap-2">
+                            <i data-lucide="shield-check" class="text-blue-500 w-4 h-4"></i>
+                            <span class="text-xs font-black uppercase">QA Expert</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="px-4 pb-4">
+                    <h3 class="text-2xl font-bold dark:text-white mb-1">Priya</h3>
+                    <p class="text-blue-600 font-bold text-sm mb-4 uppercase tracking-tighter">Hardware Diagnostics</p>
+                    
+                    <div class="space-y-3 mb-6">
+                        <div class="flex justify-between text-xs font-bold mb-1 opacity-60 dark:text-slate-400">
+                            <span>Diagnostic Speed</span>
+                            <span>95%</span>
+                        </div>
+                        <div class="h-1.5 w-full bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+                            <div class="h-full bg-blue-600 w-[95%] group-hover:animate-pulse"></div>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-2">
+                        <span class="bg-white dark:bg-slate-900 border dark:border-slate-700 px-3 py-1 rounded-lg text-[10px] font-bold dark:text-slate-300">Logic Board Pro</span>
+                        <span class="bg-white dark:bg-slate-900 border dark:border-slate-700 px-3 py-1 rounded-lg text-[10px] font-bold dark:text-slate-300">Water Damage Pro</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-[3rem] flex flex-col items-center justify-center p-8 text-center group hover:border-blue-500 transition-colors">
+                <div class="w-20 h-20 bg-blue-50 dark:bg-blue-900/20 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition">
+                    <i data-lucide="plus" class="text-blue-600 w-8 h-8"></i>
+                </div>
+                <h3 class="text-xl font-bold dark:text-white mb-2">Join the Team</h3>
+                <p class="text-slate-500 dark:text-slate-400 text-sm mb-6">Are you a certified technician looking for a fast-paced environment?</p>
+                <button class="bg-blue-600 text-white px-6 py-2 rounded-xl font-bold text-sm">Apply Now</button>
+            </div>
+            <div class="border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-[3rem] flex flex-col items-center justify-center p-8 text-center group hover:border-indigo-500 transition-colors bg-white dark:bg-slate-950">
+    <div class="w-20 h-20 bg-indigo-50 dark:bg-indigo-900/20 rounded-full flex items-center justify-center mb-6 group-hover:rotate-12 group-hover:scale-110 transition-all duration-300">
+        <i data-lucide="store" class="text-indigo-600 dark:text-indigo-400 w-8 h-8"></i>
+    </div>
+
+    <h3 class="text-xl font-black dark:text-white mb-2 tracking-tight">Host a Kiosk</h3>
+    <p class="text-slate-500 dark:text-slate-400 text-sm mb-6 max-w-[240px]">
+        Own a high-traffic retail space? Partner with us to bring expert repairs to your customers.
+    </p>
+
+    <button class="bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-3 rounded-2xl font-black text-xs uppercase tracking-widest shadow-lg shadow-indigo-500/20 active:scale-95 transition-all">
+        Become a Partner
+    </button>
+</div>
+
+<script>
+    // Refresh icons
+    if (window.lucide) {
+        lucide.createIcons();
+    }
+</script>
+        </div>
+    </div>
+</section>
+<section id="booknow" class="py-20 bg-white dark:bg-slate-900 transition-colors duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="relative bg-blue-600 rounded-[3rem] overflow-hidden shadow-2xl shadow-blue-500/40">
+            
+            <div class="absolute top-0 right-0 -mt-20 -mr-20 w-80 h-80 bg-white/10 rounded-full blur-3xl transition-transform duration-700 hover:scale-150"></div>
+            <div class="absolute bottom-0 left-0 -mb-20 -ml-20 w-64 h-64 bg-black/10 rounded-full blur-2xl"></div>
+
+            <div class="relative z-10 grid lg:grid-cols-2 gap-12 items-center p-8 md:p-16">
+                
+                <div class="text-white">
+                    <h2 class="text-4xl md:text-6xl font-black mb-6 leading-tight">
+                        Ready to Fix Your Phone Today?
+                    </h2>
+                    <p class="text-blue-100 text-lg mb-10 max-w-md">
+                        Don't wait weeks for a repair. Walk into our nearest kiosk and get your device fixed in under 30 minutes. 
+                        <span class="font-bold border-b border-blue-300/50">No appointment needed!</span>
+                    </p>
+                    
+                    <div class="flex flex-wrap gap-6">
+                        <div class="flex items-center gap-3">
+                            <div class="bg-white/20 p-2 rounded-lg backdrop-blur-md">
+                                <i data-lucide="check" class="w-5 h-5 text-white"></i>
+                            </div>
+                            <span class="font-bold">Original Parts</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <div class="bg-white/20 p-2 rounded-lg backdrop-blur-md">
+                                <i data-lucide="check" class="w-5 h-5 text-white"></i>
+                            </div>
+                            <span class="font-bold">90-Day Warranty</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col items-center lg:items-end gap-6">
+                    <div class="bg-white/10 backdrop-blur-xl border border-white/20 p-8 rounded-[2.5rem] w-full max-w-sm text-center transform transition-transform hover:rotate-2">
+                        <p class="text-white text-sm font-bold uppercase tracking-widest mb-4">Current Average Wait</p>
+                        <div class="text-7xl font-black text-white mb-2">
+                            25<span class="text-3xl text-blue-200 uppercase ml-1 tracking-tighter">Mins</span>
+                        </div>
+                        <p class="text-blue-100 text-xs mb-8 italic">Fastest service in the city center</p>
+                        
+                        <a href="contact.html">
+                             <button class="w-full bg-white text-blue-600 py-4 rounded-2xl font-black text-xl hover:bg-blue-50 hover:shadow-2xl hover:shadow-white/20 transition-all active:scale-95">
+                            Locate Nearest Kiosk
+                        </button>
+                        </a>
+                       
+                    </div>
+                    
+                    <div class="flex items-center gap-4 text-white/80">
+                        <i data-lucide="phone" class="w-5 h-5"></i>
+                        <span class="font-semibold">Questions? Call +1 (234) 567-890</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    // Refresh icons for this section
+    lucide.createIcons();
+</script>
+
+
+ <footer class="bg-white dark:bg-slate-950 pt-20 pb-10 border-t dark:border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+        
+        <div class="space-y-6">
+            <a href="index.html" class="flex items-center gap-2">
+                <div class="bg-primary p-2 rounded-xl shadow-lg shadow-blue-500/30">
+                    <i data-lucide="smartphone" class="text-white w-6 h-6"></i>
+                </div>
+                <span class="text-2xl font-black tracking-tighter dark:text-white">FIX<span class="text-primary">IT</span></span>
+            </a>
+            <!-- <span class="text-2xl font-black block tracking-tighter dark:text-white">FIX<span class="text-primary">IT</span></span> -->
+            <p class="text-slate-500 dark:text-slate-400 leading-relaxed">
+                Premium smartphone repair service at your nearest kiosk. 30-minute turnaround guaranteed.
+            </p>
+            <div class="flex gap-3">
+                <a href="#" class="p-3 bg-slate-100 dark:bg-slate-800 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-primary hover:text-white transition-all active:scale-90">
+                    <i data-lucide="facebook" class="w-5 h-5"></i>
+                </a>
+                <a href="#" class="p-3 bg-slate-100 dark:bg-slate-800 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-primary hover:text-white transition-all active:scale-90">
+                    <i data-lucide="instagram" class="w-5 h-5"></i>
+                </a>
+                <a href="#" class="p-3 bg-slate-100 dark:bg-slate-800 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-primary hover:text-white transition-all active:scale-90">
+                    <i data-lucide="twitter" class="w-5 h-5"></i>
+                </a>
+                <a href="#" class="p-3 bg-slate-100 dark:bg-slate-800 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-primary hover:text-white transition-all active:scale-90">
+                    <i data-lucide="youtube" class="w-5 h-5"></i>
+                </a>
+            </div>
+        </div>
+
+        <div>
+            <h4 class="font-bold mb-6 text-lg dark:text-white">Quick Links</h4>
+            <ul class="space-y-4">
+                <li><a href="index.html" class="text-slate-500 hover:text-primary transition-colors flex items-center gap-2"><i data-lucide="chevron-right" class="w-4 h-4"></i> Home</a></li>
+                <li><a href="service.html" class="text-slate-500 hover:text-primary transition-colors flex items-center gap-2"><i data-lucide="chevron-right" class="w-4 h-4"></i> Services</a></li>
+                <li><a href="aboutus.html" class="text-slate-500 hover:text-primary transition-colors flex items-center gap-2"><i data-lucide="chevron-right" class="w-4 h-4"></i> Aboutus</a></li>
+                <li><a href="booknow.html" class="text-slate-500 hover:text-primary transition-colors flex items-center gap-2"><i data-lucide="chevron-right" class="w-4 h-4"></i> Book Now</a></li>
+            </ul>
+        </div>
+
+        <div>
+            <h4 class="font-bold mb-6 text-lg dark:text-white">Support</h4>
+            <ul class="space-y-4">
+                <li><a href="404.html" class="text-slate-500 hover:text-primary transition-colors flex items-center gap-2"><i data-lucide="alert-circle" class="w-4 h-4"></i> 404 Error Page</a></li>
+                <li><a href="comingsoon.html" class="text-slate-500 hover:text-primary transition-colors flex items-center gap-2"><i data-lucide="clock" class="w-4 h-4"></i> Coming Soon</a></li>
+                <li><a href="contact.html" class="text-slate-500 hover:text-primary transition-colors flex items-center gap-2"><i data-lucide="help-circle" class="w-4 h-4"></i> Contact Support</a></li>
+                <li><a href="home2.html" class="text-slate-500 hover:text-primary transition-colors flex items-center gap-2"><i data-lucide="shield-check" class="w-4 h-4"></i> Home2</a></li>
+            </ul>
+        </div>
+
+        <div>
+            <h4 class="font-bold mb-6 text-lg dark:text-white">Newsletter</h4>
+            <p class="text-sm text-slate-500 mb-4">Subscribe to get repair discounts and tech tips.</p>
+            <form onsubmit="event.preventDefault()" class="flex flex-col gap-3">
+                <div class="relative">
+                    <i data-lucide="mail" class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400"></i>
+                    <input type="email" placeholder="Email Address" class="w-full bg-slate-100 dark:bg-slate-800 p-4 pl-12 rounded-xl border-none outline-none focus:ring-2 focus:ring-primary transition-all">
+                </div>
+                <button class="bg-primary text-white py-3 rounded-xl font-bold hover:bg-blue-700 shadow-lg shadow-blue-500/20 active:scale-95 transition-all">
+                    Subscribe
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 mt-20 pt-8 border-t border-slate-100 dark:border-slate-800 flex flex-col md:flex-row justify-between items-center gap-4 text-slate-500 text-sm text-center">
+        <p>© 2026 FixIt Kiosk. All rights reserved.</p>
+        <p>Made for High-Conversion Business</p>
+    </div>
+</footer>
+
+    <script>
+        const state = {
+            theme: localStorage.getItem('theme') || 'light',
+            dir: localStorage.getItem('dir') || 'ltr'
+        };
+
+        function updateUI() {
+            // Apply Theme
+            const html = document.documentElement;
+            if (state.theme === 'dark') {
+                html.classList.add('dark');
+                document.getElementById('sun-icon').classList.remove('hidden');
+                document.getElementById('moon-icon').classList.add('hidden');
+            } else {
+                html.classList.remove('dark');
+                document.getElementById('sun-icon').classList.add('hidden');
+                document.getElementById('moon-icon').classList.remove('hidden');
+            }
+
+            // Apply Direction
+            html.dir = state.dir;
+            const dirLabel = document.getElementById('dir-label');
+            if(dirLabel) dirLabel.innerText = state.dir.toUpperCase();
+
+            // Refresh Icons
+            lucide.createIcons();
+        }
+
+        function toggleTheme() {
+            state.theme = state.theme === 'light' ? 'dark' : 'light';
+            localStorage.setItem('theme', state.theme);
+            updateUI();
+        }
+
+        function toggleDirection() {
+            state.dir = state.dir === 'ltr' ? 'rtl' : 'ltr';
+            localStorage.setItem('dir', state.dir);
+            updateUI();
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const icon = document.getElementById('menu-icon');
+            const isHidden = menu.classList.toggle('hidden');
+            icon.setAttribute('data-lucide', isHidden ? 'menu' : 'x');
+            lucide.createIcons();
+        }
+function updateUI() {
+    const currentDir = localStorage.getItem('dir') || 'ltr';
+    document.documentElement.dir = currentDir;
+    
+    // This will update the label on whichever version is visible
+    const labels = document.querySelectorAll('[id^="dir-label"]');
+    labels.forEach(label => {
+        label.innerText = currentDir.toUpperCase();
+    });
+
+    lucide.createIcons();
+}
+        // Initialize Page
+        window.addEventListener('DOMContentLoaded', updateUI);
+    </script>
+    <script>
+    // Initialize state
+    // const state = {
+    //     theme: localStorage.getItem('theme') || 'light',
+    //     dir: localStorage.getItem('dir') || 'ltr'
+    // };
+
+    function updateUI() {
+        const html = document.documentElement;
+        
+        // 1. Handle Theme
+        if (state.theme === 'dark') {
+            html.classList.add('dark');
+            document.getElementById('sun-icon')?.classList.remove('hidden');
+            document.getElementById('moon-icon')?.classList.add('hidden');
+        } else {
+            html.classList.remove('dark');
+            document.getElementById('sun-icon')?.classList.add('hidden');
+            document.getElementById('moon-icon')?.classList.remove('hidden');
+        }
+
+        // 2. Handle Direction
+        html.dir = state.dir;
+        const labels = document.querySelectorAll('[id^="dir-label"]');
+        labels.forEach(label => {
+            label.innerText = state.dir.toUpperCase();
+        });
+
+        // 3. Refresh Icons
+        lucide.createIcons();
+    }
+
+    function toggleTheme() {
+        // Toggle the state
+        state.theme = state.theme === 'light' ? 'dark' : 'light';
+        // Save to local storage
+        localStorage.setItem('theme', state.theme);
+        // Update the page
+        updateUI();
+    }
+
+    // Initialize on load
+    window.addEventListener('DOMContentLoaded', updateUI);
+</script>
+</body>
+</html>

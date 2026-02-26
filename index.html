@@ -1,0 +1,1498 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <title>FixIt | Smartphone Repair Kiosk</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: { primary: '#2563eb' }
+                }
+            }
+        }
+    </script>
+    <script>
+    // tailwind.config = {
+    //     darkMode: 'class', // This is the missing piece!
+    // }
+</script>
+    <style>
+        .transition-all-custom { transition: all 0.3s ease-in-out; }
+        .glass { backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+        .img-card:hover img { transform: scale(1.05); }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-900 dark:text-slate-100 min-h-screen font-sans transition-all-custom">
+
+  <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-900/80 border-b dark:border-slate-800 glass">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-20 items-center">
+            
+            <a href="index.html" class="flex items-center gap-2">
+                <div class="bg-primary p-2 rounded-xl shadow-lg shadow-blue-500/30">
+                    <i data-lucide="smartphone" class="text-white w-6 h-6"></i>
+                </div>
+                <span class="text-2xl font-black tracking-tighter dark:text-white">FIX<span class="text-primary">IT</span></span>
+            </a>
+
+            <div class="hidden lg:flex space-x-8 rtl:space-x-reverse items-center">
+                <a href="index.html" class="nav-link font-semibold transition hover:text-primary">Home</a>
+                 <a href="home2.html" class="nav-link  font-semibold transition  hover:text-primary">Home2</a>
+                <a href="booknow.html" class="nav-link font-semibold transition hover:text-primary">Book Now</a>
+                 <a href="aboutus.html" class="nav-link font-semibold transition hover:text-primary">About Us</a>
+                <a href="service.html" class="nav-link font-semibold transition hover:text-primary">Services</a>
+                <!-- <a href="#gallery" class="nav-link font-semibold transition hover:text-primary">Gallery</a> -->
+                <a href="pricing.html" class="nav-link font-semibold transition hover:text-primary">Pricing</a>
+                <a href="contact.html" class="nav-link font-semibold transition hover:text-primary">Contact</a>
+                
+                <div class="relative">
+    <button onclick="toggleDropdown(event)" 
+            class="flex items-center gap-1 font-semibold hover:text-primary py-2 dark:text-slate-200 transition-colors focus:outline-none"
+            id="dashboard-btn">
+        Dashboard <i data-lucide="chevron-down" id="dropdown-icon" class="w-4 h-4 transition-transform duration-300"></i>
+    </button>
+    
+    <div id="dashboard-menu" 
+         class="absolute right-0 mt-2 w-56 bg-white dark:bg-slate-900 border dark:border-slate-800 rounded-[1.2rem] shadow-2xl hidden opacity-0 translate-y-2 transition-all duration-300 overflow-hidden z-[100]">
+        
+        <div class="p-2 space-y-1">
+            <a href="user.html" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:text-primary transition-all font-medium dark:text-slate-200">
+                <i data-lucide="user" class="w-4 h-4"></i> Profile Settings
+            </a>
+            
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleDropdown(event) {
+        // Prevent click from bubbling up to the window listener
+        event.stopPropagation();
+        
+        const menu = document.getElementById('dashboard-menu');
+        const icon = document.getElementById('dropdown-icon');
+        const isHidden = menu.classList.contains('hidden');
+
+        if (isHidden) {
+            // Open Menu
+            menu.classList.remove('hidden');
+            // Small delay to allow transition
+            setTimeout(() => {
+                menu.classList.remove('opacity-0', 'translate-y-2');
+                icon.classList.add('rotate-180');
+            }, 10);
+        } else {
+            // Close Menu
+            closeDropdown();
+        }
+    }
+
+    function closeDropdown() {
+        const menu = document.getElementById('dashboard-menu');
+        const icon = document.getElementById('dropdown-icon');
+        
+        menu.classList.add('opacity-0', 'translate-y-2');
+        icon.classList.remove('rotate-180');
+        
+        // Hide after animation finishes
+        setTimeout(() => {
+            menu.classList.add('hidden');
+        }, 300);
+    }
+
+    // Close menu when clicking anywhere else on the screen
+    window.addEventListener('click', function(e) {
+        const menu = document.getElementById('dashboard-menu');
+        const btn = document.getElementById('dashboard-btn');
+        
+        if (!menu.contains(e.target) && !btn.contains(e.target)) {
+            closeDropdown();
+        }
+    });
+
+    // Refresh icons
+    if (window.lucide) lucide.createIcons();
+</script>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <button onclick="toggleTheme()" class="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-blue-400 hover:scale-110 transition">
+                    <i data-lucide="sun" id="sun-icon" class="hidden"></i>
+                    <i data-lucide="moon" id="moon-icon"></i>
+                </button>
+                <button onclick="toggleDirection()" class="hidden md:flex items-center justify-between gap-3 bg-slate-100 dark:bg-slate-800 rounded-2xl font-bold transition-all active:scale-95 px-3 py-2 text-sm lg:hover:ring-2 lg:hover:ring-primary/50">
+                    <i data-lucide="languages" class="w-4 h-4 text-primary"></i>
+                    <span id="dir-label" class="bg-primary text-white text-[10px] px-2 py-0.5 rounded-full uppercase">LTR</span>
+                </button>
+                <a href="login.html">
+                 <button class="hidden lg:block bg-primary text-white px-6 py-2.5 rounded-xl font-bold hover:bg-blue-700 shadow-lg shadow-blue-500/20 transition">Register</button>
+
+                </a>
+                <button onclick="toggleMobileMenu()" class="lg:hidden p-2 dark:text-white">
+                    <i data-lucide="menu" id="menu-icon" class="w-7 h-7"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="mobile-menu" class="hidden lg:hidden bg-white dark:bg-slate-900 border-t dark:border-slate-800 px-4 py-8 space-y-4 max-h-screen overflow-y-auto">
+    
+    <div class="flex gap-3 px-2 mb-4">
+        <button onclick="toggleTheme()" class="flex-1 flex items-center justify-center gap-3 p-4 bg-slate-100 dark:bg-slate-800 rounded-2xl font-bold transition-all active:scale-95 border border-transparent dark:border-slate-700">
+            <div class="flex items-center gap-2">
+                <i data-lucide="sun" class="sun-icon w-5 h-5 text-amber-500 hidden"></i>
+                <i data-lucide="moon" class="moon-icon w-5 h-5 text-blue-400"></i>
+                <span class="dark:text-white text-sm">Mode</span>
+            </div>
+        </button>
+
+        <button onclick="toggleDirection()" class="flex-1 flex items-center justify-center gap-3 p-4 bg-slate-100 dark:bg-slate-800 rounded-2xl font-bold transition-all active:scale-95 border border-transparent dark:border-slate-700">
+            <div class="flex items-center gap-2">
+                <i data-lucide="languages" class="w-5 h-5 text-primary"></i>
+                <span class="dir-status-label bg-primary text-white text-[10px] px-2 py-0.5 rounded-md uppercase font-black">LTR</span>
+            </div>
+        </button>
+    </div>
+
+    <div class="space-y-1">
+        <a href="index.html" class="nav-link-mob block text-xl font-bold px-4 py-3 rounded-xl border-b dark:border-slate-800 dark:text-white">Home</a>
+        <a href="home2.html" class="nav-link-mob block text-xl font-bold px-4 py-3 rounded-xl border-b dark:border-slate-800 dark:text-white">Home2</a>
+        <a href="booknow.html" class="nav-link-mob block text-xl font-bold px-4 py-3 rounded-xl border-b dark:border-slate-800 dark:text-white text-primary">Book Now</a>
+        <a href="aboutus.html" class="nav-link-mob block text-xl font-bold px-4 py-3 rounded-xl border-b dark:border-slate-800 dark:text-white">About Us</a>
+        <a href="service.html" class="nav-link-mob block text-xl font-bold px-4 py-3 rounded-xl border-b dark:border-slate-800 dark:text-white">Services</a>
+        <a href="pricing.html" class="nav-link-mob block text-xl font-bold px-4 py-3 rounded-xl border-b dark:border-slate-800 dark:text-white">Pricing</a>
+        <a href="contact.html" class="nav-link-mob block text-xl font-bold px-4 py-3 rounded-xl border-b dark:border-slate-800 dark:text-white">Contact</a>
+    </div>
+
+    <div class="bg-slate-50 dark:bg-slate-800/50 p-4 rounded-2xl border dark:border-slate-700">
+        <button onclick="document.getElementById('mob-dash').classList.toggle('hidden')" class="w-full flex justify-between items-center font-bold dark:text-white">
+            User Dashboard <i data-lucide="chevron-down" class="w-5 h-5"></i>
+        </button>
+        <div id="mob-dash" class="hidden pt-4 space-y-4 pl-4 border-l-2 border-primary mt-2">
+            <a href="user.html" class="nav-link-mob block text-slate-500 dark:text-slate-400">Account Info</a>
+        </div>
+    </div>
+
+    <a href="login.html" class="block">
+        <button class="w-full bg-primary text-white py-4 rounded-2xl font-bold text-lg shadow-lg shadow-blue-500/20 mt-4 active:scale-95 transition-transform">Register</button>
+    </a>
+</div>
+
+</nav>
+
+<style>
+    /* Styling for the Active Mobile Link */
+.nav-link-mob.active {
+    background-color: rgba(37, 99, 235, 0.1); /* Light blue bg */
+    color: #2563eb !important; /* Primary blue text */
+    border-left: 4px solid #2563eb;
+    padding-left: 1rem; /* Adjust padding to account for border */
+}
+
+/* Dark mode adjustment for active link */
+.dark .nav-link-mob.active {
+    background-color: rgba(37, 99, 235, 0.2);
+    color: #60a5fa !important;
+}
+    /* Active state styling */
+.nav-link.active {
+    color: #2563eb !important; /* Your primary blue */
+    position: relative;
+}
+
+/* Optional: Add a small dot or underline to the active link */
+.nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 4px;
+    background-color: #2563eb;
+    border-radius: 50%;
+}
+</style>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+    // 1. Get current page name (e.g., "service.html")
+    const currentPath = window.location.pathname.split("/").pop();
+    
+    // 2. Default to index.html if path is empty (root)
+    const activePage = currentPath === "" ? "index.html" : currentPath;
+
+    // 3. Select all mobile nav links
+    const mobileLinks = document.querySelectorAll('.nav-link-mob');
+
+    mobileLinks.forEach(link => {
+        // Get the href attribute of the link
+        const linkHref = link.getAttribute('href');
+
+        // 4. Compare and add active class
+        if (linkHref === activePage) {
+            link.classList.add('active');
+            
+            // If the link is inside the Dashboard dropdown, open the dropdown automatically
+            const parentDropdown = link.closest('#mob-dash');
+            if (parentDropdown) {
+                parentDropdown.classList.remove('hidden');
+            }
+        }
+    });
+});
+    document.addEventListener("DOMContentLoaded", function() {
+    // Get the current page URL path
+    const currentPath = window.location.pathname;
+
+    // Select all desktop and mobile navigation links
+    const allLinks = document.querySelectorAll('.nav-link, .nav-link-mob');
+
+    allLinks.forEach(link => {
+        // Get the href attribute
+        const linkPath = link.getAttribute('href');
+
+        // Check if the current URL ends with the link's href
+        // We use endsWith to handle cases like 'domain.com/index.html' vs 'index.html'
+        if (currentPath.endsWith(linkPath) || (currentPath === '/' && linkPath === '/index.html')) {
+            link.classList.add('active');
+            
+            // For mobile menu active items, maybe add a background
+            if(link.classList.contains('nav-link-mob')) {
+                link.classList.add('bg-blue-50', 'dark:bg-blue-900/20', 'text-primary');
+            }
+        }
+    });
+});
+</script>
+<script>
+    function setActiveLink() {
+    const currentHash = window.location.hash || '/index.html';
+    
+    // Update Desktop Links
+    document.querySelectorAll('.nav-link').forEach(link => {
+        if (link.getAttribute('href') === currentHash) {
+            link.classList.add('text-primary');
+            link.classList.remove('text-slate-400', 'dark:text-slate-200');
+        } else {
+            link.classList.remove('text-primary');
+            link.classList.add('text-slate-400');
+        }
+    });
+
+    // Update Mobile Links
+    document.querySelectorAll('.nav-link-mob').forEach(link => {
+        if (link.getAttribute('href') === currentHash) {
+            link.classList.add('bg-blue-50', 'text-primary', 'dark:bg-primary/10');
+        } else {
+            link.classList.remove('bg-blue-50', 'text-primary', 'dark:bg-primary/10');
+        }
+    });
+}
+
+// Listen for hash changes and page load
+window.addEventListener('hashchange', setActiveLink);
+window.addEventListener('load', setActiveLink);
+
+// Add this to your toggleMobileMenu function to close menu after clicking a link
+document.querySelectorAll('.nav-link-mob').forEach(link => {
+    link.addEventListener('click', () => {
+        document.getElementById('mobile-menu').classList.add('hidden');
+        // Reset icon to menu
+        const icon = document.getElementById('menu-icon');
+        icon.setAttribute('data-lucide', 'menu');
+        lucide.createIcons();
+    });
+});
+</script>
+
+    <main id="main-content">
+     <section id="home" class="relative py-16 lg:py-24 overflow-hidden bg-slate-50 dark:bg-slate-900 transition-colors duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-16 items-center">
+        
+        <div class="z-10 order-1 lg:order-1 text-center lg:text-left">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-sm font-bold mb-6">
+                <i data-lucide="zap" class="w-4 h-4"></i>
+                Same-Day Repair Available
+            </div>
+            <h1 class="text-4xl sm:text-5xl lg:text-7xl font-black leading-tight mb-6 dark:text-white">
+                Fast Phone Repair <br>
+                <span class="text-primary">While You Wait</span>
+            </h1>
+            <p class="text-lg text-slate-600 dark:text-slate-400 mb-8 max-w-lg mx-auto lg:mx-0 leading-relaxed">
+                Don't let a cracked screen ruin your day. Our expert technicians at the kiosk can fix most issues in under 30 minutes using premium parts.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                <a href="booknow.html" class="bg-primary text-white px-8 py-4 rounded-2xl font-bold text-lg hover:bg-blue-700 shadow-xl shadow-blue-500/20 text-center transition-all hover:-translate-y-1">
+                    Book Now
+                </a>
+                <a href="pricing.html" class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-8 py-4 rounded-2xl font-bold text-lg text-center hover:bg-slate-50 dark:hover:bg-slate-700 transition-all dark:text-white">
+                    View Pricing
+                </a>
+            </div>
+        </div>
+
+        <div class="order-2 lg:order-2 flex justify-center">
+            <div class="relative w-full max-w-[450px] aspect-[3/4] rounded-[2.5rem] overflow-hidden shadow-2xl border-8 border-slate-200 dark:border-slate-800 select-none group">
+                
+                <img src="assets/damph" 
+                     class="absolute inset-0 w-full h-full object-cover" alt="Fixed Smartphone">
+
+                <div id="before-image" class="absolute inset-0 w-1/2 h-full overflow-hidden border-r-2 border-white z-10">
+                    <img src="assets/indexhero" 
+                         class="absolute inset-0 h-full object-cover w-[450px] max-w-none" alt="Broken Smartphone">
+                </div>
+
+                <div id="slider-handle" class="absolute top-0 bottom-0 left-1/2 w-1 bg-white z-20 cursor-ew-resize shadow-[0_0_10px_rgba(0,0,0,0.5)]">
+                    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-lg">
+                        <i data-lucide="move-horizontal" class="text-primary w-6 h-6"></i>
+                    </div>
+                </div>
+
+                <span class="absolute bottom-4 left-4 z-20 bg-black/50 backdrop-blur-md text-white px-3 py-1 rounded-lg text-xs font-bold uppercase">Before</span>
+                <span class="absolute bottom-4 right-4 z-20 bg-blue-600/70 backdrop-blur-md text-white px-3 py-1 rounded-lg text-xs font-bold uppercase">After</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    const sliderContainer = document.querySelector('.relative.group');
+    const beforeImage = document.getElementById('before-image');
+    const handle = document.getElementById('slider-handle');
+
+    const moveSlider = (e) => {
+        let x = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
+        const rect = sliderContainer.getBoundingClientRect();
+        let position = ((x - rect.left) / rect.width) * 100;
+
+        // Boundaries
+        if (position < 0) position = 0;
+        if (position > 100) position = 100;
+
+        beforeImage.style.width = `${position}%`;
+        handle.style.left = `${position}%`;
+    };
+
+    // Event Listeners
+    sliderContainer.addEventListener('mousemove', moveSlider);
+    sliderContainer.addEventListener('touchmove', moveSlider);
+    
+    // Initialize Icons
+    lucide.createIcons();
+</script>
+
+        <section id="why-choose-us" class="py-20 bg-slate-50 dark:bg-slate-900/50 transition-colors duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-5xl font-black mb-4 dark:text-white">Why Choose Our Kiosk?</h2>
+            <p class="text-slate-500 dark:text-slate-400 max-w-2xl mx-auto">
+                We combine speed, quality, and transparency to get your digital life back on track.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            
+            <div class="group p-8 bg-white dark:bg-slate-800 rounded-[2.5rem] shadow-sm hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 border border-slate-100 dark:border-slate-700 hover:border-primary">
+                <div class="w-16 h-16 bg-blue-100 dark:bg-blue-900/30 text-primary rounded-2xl flex items-center justify-center mb-6 group-hover:rotate-12 transition-transform duration-300">
+                    <i data-lucide="timer" class="w-8 h-8"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-3 dark:text-white">30-Minute Repairs</h3>
+                <p class="text-slate-500 dark:text-slate-400 leading-relaxed">
+                    Most repairs, including screen and battery replacements, are done while you shop.
+                </p>
+            </div>
+
+            <div class="group p-8 bg-white dark:bg-slate-800 rounded-[2.5rem] shadow-sm hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 border border-slate-100 dark:border-slate-700 hover:border-primary">
+                <div class="w-16 h-16 bg-green-100 dark:bg-green-900/30 text-green-600 rounded-2xl flex items-center justify-center mb-6 group-hover:rotate-12 transition-transform duration-300">
+                    <i data-lucide="award" class="w-8 h-8"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-3 dark:text-white">Certified Experts</h3>
+                <p class="text-slate-500 dark:text-slate-400 leading-relaxed">
+                    Our team is trained and certified to handle all major smartphone brands and models.
+                </p>
+            </div>
+
+            <div class="group p-8 bg-white dark:bg-slate-800 rounded-[2.5rem] shadow-sm hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 border border-slate-100 dark:border-slate-700 hover:border-primary">
+                <div class="w-16 h-16 bg-purple-100 dark:bg-purple-900/30 text-purple-600 rounded-2xl flex items-center justify-center mb-6 group-hover:rotate-12 transition-transform duration-300">
+                    <i data-lucide="shield-check" class="w-8 h-8"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-3 dark:text-white">Warranty Included</h3>
+                <p class="text-slate-500 dark:text-slate-400 leading-relaxed">
+                    We stand by our work. Every repair comes with a comprehensive 90-day warranty.
+                </p>
+            </div>
+
+            <div class="group p-8 bg-white dark:bg-slate-800 rounded-[2.5rem] shadow-sm hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 border border-slate-100 dark:border-slate-700 hover:border-primary">
+                <div class="w-16 h-16 bg-orange-100 dark:bg-orange-900/30 text-orange-600 rounded-2xl flex items-center justify-center mb-6 group-hover:rotate-12 transition-transform duration-300">
+                    <i data-lucide="banknote" class="w-8 h-8"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-3 dark:text-white">Affordable Pricing</h3>
+                <p class="text-slate-500 dark:text-slate-400 leading-relaxed">
+                    Competitive rates with no hidden fees. Get a quote before we even start the work.
+                </p>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<section id="services" class="py-20 bg-white dark:bg-slate-900 transition-colors duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-5xl font-black mb-4 dark:text-white">Quick Repair Options</h2>
+            <p class="text-slate-500 dark:text-slate-400 max-w-2xl mx-auto">
+                Select your issue below for an instant fix. Most repairs are completed within 30 minutes at our kiosk.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            
+            <div class="group flex flex-col bg-slate-50 dark:bg-slate-800 rounded-[2.5rem] overflow-hidden shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 border border-transparent hover:border-primary/20">
+                <div class="aspect-square overflow-hidden relative">
+                    <img src="assets/screenrepair01" alt="Screen Repair" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                    <div class="absolute top-4 right-4 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest text-primary shadow-sm">Fast Fix</div>
+                </div>
+                <div class="p-8 text-center flex flex-col flex-grow">
+                    <div class="w-14 h-14 bg-blue-100 dark:bg-blue-900/30 text-primary rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:bg-primary group-hover:text-white group-hover:rotate-12 transition-all duration-300 shadow-sm">
+                        <i data-lucide="smartphone" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="font-black text-xl dark:text-white mb-2 tracking-tight">Screen Repair</h3>
+                    <p class="text-[10px] text-slate-500 dark:text-slate-400 mb-6 uppercase tracking-[0.2em] font-bold">Premium Parts From $79</p>
+                    <div class="mt-auto">
+                        <a href="booknow.html" class="inline-flex items-center gap-2 px-6 py-3 bg-white dark:bg-slate-900 rounded-xl text-sm font-black text-primary border border-slate-100 dark:border-slate-700 shadow-sm group-hover:bg-primary group-hover:text-white group-hover:border-primary transition-all duration-300">
+                            BOOK NOW <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="group flex flex-col bg-slate-50 dark:bg-slate-800 rounded-[2.5rem] overflow-hidden shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 border border-transparent hover:border-primary/20">
+                <div class="aspect-square overflow-hidden relative">
+                    <img src="assets/batteryrepair" alt="Battery Replacement" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                </div>
+                <div class="p-8 text-center flex flex-col flex-grow">
+                    <div class="w-14 h-14 bg-blue-100 dark:bg-blue-900/30 text-primary rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:bg-primary group-hover:text-white group-hover:rotate-12 transition-all duration-300 shadow-sm">
+                        <i data-lucide="battery-charging" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="font-black text-xl dark:text-white mb-2 tracking-tight">Battery Fix</h3>
+                    <p class="text-[10px] text-slate-500 dark:text-slate-400 mb-6 uppercase tracking-[0.2em] font-bold">From $49</p>
+                    <div class="mt-auto">
+                        <a href="booknow.html" class="inline-flex items-center gap-2 px-6 py-3 bg-white dark:bg-slate-900 rounded-xl text-sm font-black text-primary border border-slate-100 dark:border-slate-700 shadow-sm group-hover:bg-primary group-hover:text-white group-hover:border-primary transition-all duration-300">
+                            BOOK NOW <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="group flex flex-col bg-slate-50 dark:bg-slate-800 rounded-[2.5rem] overflow-hidden shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 border border-transparent hover:border-primary/20">
+                <div class="aspect-square overflow-hidden relative">
+                    <img src="assets/port" alt="Charging Port Fix" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                </div>
+                <div class="p-8 text-center flex flex-col flex-grow">
+                    <div class="w-14 h-14 bg-blue-100 dark:bg-blue-900/30 text-primary rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:bg-primary group-hover:text-white group-hover:rotate-12 transition-all duration-300 shadow-sm">
+                        <i data-lucide="zap" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="font-black text-xl dark:text-white mb-2 tracking-tight">Port Fix</h3>
+                    <p class="text-[10px] text-slate-500 dark:text-slate-400 mb-6 uppercase tracking-[0.2em] font-bold">From $39</p>
+                    <div class="mt-auto">
+                        <a href="booknow.html" class="inline-flex items-center gap-2 px-6 py-3 bg-white dark:bg-slate-900 rounded-xl text-sm font-black text-primary border border-slate-100 dark:border-slate-700 shadow-sm group-hover:bg-primary group-hover:text-white group-hover:border-primary transition-all duration-300">
+                            BOOK NOW <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="group flex flex-col bg-slate-50 dark:bg-slate-800 rounded-[2.5rem] overflow-hidden shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 border border-transparent hover:border-primary/20">
+                <div class="aspect-square overflow-hidden relative">
+                    <img src="assets/waterdamage" alt="Water Damage Repair" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                </div>
+                <div class="p-8 text-center flex flex-col flex-grow">
+                    <div class="w-14 h-14 bg-blue-100 dark:bg-blue-900/30 text-primary rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:bg-primary group-hover:text-white group-hover:rotate-12 transition-all duration-300 shadow-sm">
+                        <i data-lucide="droplets" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="font-black text-xl dark:text-white mb-2 tracking-tight">Water Damage</h3>
+                    <p class="text-[10px] text-slate-500 dark:text-slate-400 mb-6 uppercase tracking-[0.2em] font-bold">Diagnosis $29</p>
+                    <div class="mt-auto">
+                        <a href="booknow.html" class="inline-flex items-center gap-2 px-6 py-3 bg-white dark:bg-slate-900 rounded-xl text-sm font-black text-primary border border-slate-100 dark:border-slate-700 shadow-sm group-hover:bg-primary group-hover:text-white group-hover:border-primary transition-all duration-300">
+                            BOOK NOW <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="group flex flex-col bg-slate-50 dark:bg-slate-800 rounded-[2.5rem] overflow-hidden shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 border border-transparent hover:border-primary/20">
+                <div class="aspect-square overflow-hidden relative">
+                    <img src="assets/phonecamera" alt="Camera Repair" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                </div>
+                <div class="p-8 text-center flex flex-col flex-grow">
+                    <div class="w-14 h-14 bg-blue-100 dark:bg-blue-900/30 text-primary rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:bg-primary group-hover:text-white group-hover:rotate-12 transition-all duration-300 shadow-sm">
+                        <i data-lucide="camera" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="font-black text-xl dark:text-white mb-2 tracking-tight">Camera Fix</h3>
+                    <p class="text-[10px] text-slate-500 dark:text-slate-400 mb-6 uppercase tracking-[0.2em] font-bold">From $59</p>
+                    <div class="mt-auto">
+                        <a href="booknow.html" class="inline-flex items-center gap-2 px-6 py-3 bg-white dark:bg-slate-900 rounded-xl text-sm font-black text-primary border border-slate-100 dark:border-slate-700 shadow-sm group-hover:bg-primary group-hover:text-white group-hover:border-primary transition-all duration-300">
+                            BOOK NOW <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="group flex flex-col bg-slate-50 dark:bg-slate-800 rounded-[2.5rem] overflow-hidden shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 border border-transparent hover:border-primary/20">
+                <div class="aspect-square overflow-hidden relative">
+                    <img src="assets/other" alt="General Repair" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                </div>
+                <div class="p-8 text-center flex flex-col flex-grow">
+                    <div class="w-14 h-14 bg-blue-100 dark:bg-blue-900/30 text-primary rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:bg-primary group-hover:text-white group-hover:rotate-12 transition-all duration-300 shadow-sm">
+                        <i data-lucide="wrench" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="font-black text-xl dark:text-white mb-2 tracking-tight">Other Issues</h3>
+                    <p class="text-[10px] text-slate-500 dark:text-slate-400 mb-6 uppercase tracking-[0.2em] font-bold">Expert Evaluation</p>
+                    <div class="mt-auto">
+                        <a href="booknow.html" class="inline-flex items-center gap-2 px-6 py-3 bg-white dark:bg-slate-900 rounded-xl text-sm font-black text-primary border border-slate-100 dark:border-slate-700 shadow-sm group-hover:bg-primary group-hover:text-white group-hover:border-primary transition-all duration-300">
+                            BOOK NOW <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<script>
+    if (window.lucide) {
+        lucide.createIcons();
+    }
+</script>
+
+<script>
+    // Ensure icons refresh if you load this dynamically
+    lucide.createIcons();
+</script>
+<!-- <section id="brands" class="py-16 bg-white dark:bg-slate-900 border-y dark:border-slate-800 transition-colors duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="text-center mb-12 mx-auto">
+            <h2 class="text-sm font-bold tracking-[0.2em] uppercase text-slate-400 dark:text-slate-500 mb-4">
+                Expert Service For All Major Brands
+            </h2>
+            <div class="h-1 w-20 bg-primary mx-auto rounded-full"></div>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 items-center justify-center">
+            
+            <div class="group flex flex-col items-center justify-center p-6 grayscale hover:grayscale-0 transition-all duration-500 hover:-translate-y-2">
+                <i data-lucide="apple" class="w-12 h-12 mb-4 text-slate-700 dark:text-slate-300 group-hover:text-black dark:group-hover:text-white transition-colors"></i>
+                <span class="font-black text-xl tracking-tighter opacity-0 group-hover:opacity-100 transition-opacity">APPLE</span>
+            </div>
+
+            <div class="group flex flex-col items-center justify-center p-6 grayscale hover:grayscale-0 transition-all duration-500 hover:-translate-y-2">
+                <div class="text-3xl font-black tracking-tighter text-slate-700 dark:text-slate-300 group-hover:text-blue-700 transition-colors mb-2">SAMSUNG</div>
+                <div class="w-8 h-1 bg-blue-700 scale-x-0 group-hover:scale-x-100 transition-transform"></div>
+            </div>
+
+            <div class="group flex flex-col items-center justify-center p-6 grayscale hover:grayscale-0 transition-all duration-500 hover:-translate-y-2">
+                <div class="w-12 h-12 bg-slate-700 dark:bg-slate-300 group-hover:bg-[#FF6700] rounded-xl flex items-center justify-center transition-colors mb-4">
+                    <span class="text-white font-bold text-xl">mi</span>
+                </div>
+                <span class="font-bold text-slate-700 dark:text-slate-300 group-hover:text-[#FF6700] transition-colors">XIAOMI</span>
+            </div>
+
+            <div class="group flex flex-col items-center justify-center p-6 grayscale hover:grayscale-0 transition-all duration-500 hover:-translate-y-2">
+                <div class="w-12 h-12 border-4 border-slate-700 dark:border-slate-300 group-hover:border-red-600 flex items-center justify-center transition-colors mb-4">
+                    <i data-lucide="plus" class="text-slate-700 dark:text-slate-300 group-hover:text-red-600"></i>
+                </div>
+                <span class="font-bold text-slate-700 dark:text-slate-300 group-hover:text-red-600 transition-colors">ONEPLUS</span>
+            </div>
+
+            <div class="group flex flex-col items-center justify-center p-6 grayscale hover:grayscale-0 transition-all duration-500 hover:-translate-y-2">
+                <i data-lucide="flower" class="w-12 h-12 mb-4 text-slate-700 dark:text-slate-300 group-hover:text-red-500 transition-colors"></i>
+                <span class="font-bold text-slate-700 dark:text-slate-300 group-hover:text-red-500 transition-colors uppercase">Huawei</span>
+            </div>
+            <div class="group flex flex-col items-center justify-center p-4 min-w-[120px] grayscale hover:grayscale-0 transition-all duration-500 hover:-translate-y-2">
+                <div class="flex gap-1 mb-4">
+                    <span class="text-3xl font-black text-slate-700 dark:text-slate-300 group-hover:text-[#4285F4] transition-colors">G</span>
+                    <span class="text-3xl font-black text-slate-700 dark:text-slate-300 group-hover:text-[#EA4335] transition-colors">o</span>
+                    <span class="text-3xl font-black text-slate-700 dark:text-slate-300 group-hover:text-[#FBBC05] transition-colors">o</span>
+                    <span class="text-3xl font-black text-slate-700 dark:text-slate-300 group-hover:text-[#4285F4] transition-colors">g</span>
+                    <span class="text-3xl font-black text-slate-700 dark:text-slate-300 group-hover:text-[#34A853] transition-colors">l</span>
+                    <span class="text-3xl font-black text-slate-700 dark:text-slate-300 group-hover:text-[#EA4335] transition-colors">e</span>
+                </div>
+                <span class="font-bold text-[10px] tracking-widest text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity">PIXEL SERIES</span>
+            </div>
+
+        </div>
+    </div>
+</section> -->
+<section id="brands" class="py-16 bg-white dark:bg-slate-900 border-y dark:border-slate-800 transition-colors duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="text-center mb-16">
+            <h2 class="text-sm font-bold tracking-[0.2em] uppercase text-slate-400 dark:text-slate-500 mb-4">
+                Expert Service For All Major Brands
+            </h2>
+            <div class="h-1 w-20 bg-primary mx-auto rounded-full"></div>
+        </div>
+
+        <div class="flex flex-wrap justify-center items-center gap-8 md:gap-12 lg:gap-16">
+            
+            <div class="group flex flex-col items-center justify-center min-w-[120px] grayscale hover:grayscale-0 transition-all duration-500 hover:-translate-y-2">
+                <i data-lucide="apple" class="w-10 h-10 md:w-12 md:h-12 mb-4 text-slate-700 dark:text-slate-300 group-hover:text-black dark:group-hover:text-white transition-colors"></i>
+                <span class="font-black text-lg md:text-xl tracking-tighter opacity-0 group-hover:opacity-100 transition-opacity">APPLE</span>
+            </div>
+
+            <div class="group flex flex-col items-center justify-center min-w-[120px] grayscale hover:grayscale-0 transition-all duration-500 hover:-translate-y-2">
+                <div class="text-2xl md:text-3xl font-black tracking-tighter text-slate-700 dark:text-slate-300 group-hover:text-blue-700 transition-colors mb-2">SAMSUNG</div>
+                <div class="w-8 h-1 bg-blue-700 scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></div>
+            </div>
+
+            <div class="group flex flex-col items-center justify-center min-w-[120px] grayscale hover:grayscale-0 transition-all duration-500 hover:-translate-y-2">
+                <div class="flex gap-1 mb-4">
+                    <span class="text-2xl md:text-3xl font-black text-slate-700 dark:text-slate-300 group-hover:text-[#4285F4] transition-colors">G</span>
+                    <span class="text-2xl md:text-3xl font-black text-slate-700 dark:text-slate-300 group-hover:text-[#EA4335] transition-colors">o</span>
+                    <span class="text-2xl md:text-3xl font-black text-slate-700 dark:text-slate-300 group-hover:text-[#FBBC05] transition-colors">o</span>
+                    <span class="text-2xl md:text-3xl font-black text-slate-700 dark:text-slate-300 group-hover:text-[#4285F4] transition-colors">g</span>
+                    <span class="text-2xl md:text-3xl font-black text-slate-700 dark:text-slate-300 group-hover:text-[#34A853] transition-colors">l</span>
+                    <span class="text-2xl md:text-3xl font-black text-slate-700 dark:text-slate-300 group-hover:text-[#EA4335] transition-colors">e</span>
+                </div>
+                <span class="font-bold text-[10px] tracking-widest text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity">PIXEL SERIES</span>
+            </div>
+
+            <div class="group flex flex-col items-center justify-center min-w-[120px] grayscale hover:grayscale-0 transition-all duration-500 hover:-translate-y-2">
+                <div class="w-10 h-10 md:w-12 md:h-12 bg-slate-700 dark:bg-slate-300 group-hover:bg-[#FF6700] rounded-xl flex items-center justify-center transition-colors mb-4">
+                    <span class="text-white font-bold text-lg md:text-xl">mi</span>
+                </div>
+                <span class="font-bold text-slate-700 dark:text-slate-300 group-hover:text-[#FF6700] transition-colors">XIAOMI</span>
+            </div>
+
+            <div class="group flex flex-col items-center justify-center min-w-[120px] grayscale hover:grayscale-0 transition-all duration-500 hover:-translate-y-2">
+                <div class="w-10 h-10 md:w-12 md:h-12 border-4 border-slate-700 dark:border-slate-300 group-hover:border-red-600 flex items-center justify-center transition-colors mb-4">
+                    <i data-lucide="plus" class="text-slate-700 dark:text-slate-300 group-hover:text-red-600"></i>
+                </div>
+                <span class="font-bold text-slate-700 dark:text-slate-300 group-hover:text-red-600 transition-colors">ONEPLUS</span>
+            </div>
+
+            <div class="group flex flex-col items-center justify-center min-w-[120px] grayscale hover:grayscale-0 transition-all duration-500 hover:-translate-y-2">
+                <i data-lucide="flower" class="w-10 h-10 md:w-12 md:h-12 mb-4 text-slate-700 dark:text-slate-300 group-hover:text-red-500 transition-colors"></i>
+                <span class="font-bold text-slate-700 dark:text-slate-300 group-hover:text-red-500 transition-colors uppercase">Huawei</span>
+            </div>
+
+        </div>
+    </div>
+</section>
+<section id="pricing" class="py-20 bg-slate-50 dark:bg-slate-900/50 transition-colors duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid lg:grid-cols-2 gap-16 items-center">
+            
+            <div>
+                <h2 class="text-4xl md:text-6xl font-black mb-6 dark:text-white leading-tight">
+                    Transparent Pricing. <br>
+                    <span class="text-primary">No Hidden Fees.</span>
+                </h2>
+                <p class="text-lg text-slate-500 dark:text-slate-400 mb-8">
+                    Select your device details to see an instant estimate. We use only premium parts, and every repair includes our 90-day warranty.
+                </p>
+                
+                <ul class="space-y-4">
+                    <li class="flex items-center gap-3 font-semibold dark:text-slate-200">
+                        <i data-lucide="check-circle-2" class="text-green-500 w-6 h-6"></i>
+                        Free Diagnostic Check
+                    </li>
+                    <li class="flex items-center gap-3 font-semibold dark:text-slate-200">
+                        <i data-lucide="check-circle-2" class="text-green-500 w-6 h-6"></i>
+                        Price Match Guarantee
+                    </li>
+                    <li class="flex items-center gap-3 font-semibold dark:text-slate-200">
+                        <i data-lucide="check-circle-2" class="text-green-500 w-6 h-6"></i>
+                        Premium OEM-Quality Parts
+                    </li>
+                </ul>
+            </div>
+
+            <div class="bg-white dark:bg-slate-800 p-8 md:p-10 rounded-[2.5rem] shadow-2xl border border-slate-100 dark:border-slate-700 relative overflow-hidden group">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16 transition-transform group-hover:scale-150"></div>
+                
+                <h3 class="text-2xl font-bold mb-8 dark:text-white flex items-center gap-2">
+                    <i data-lucide="calculator" class="text-primary"></i>
+                    Price Calculator
+                </h3>
+
+                <div class="space-y-6">
+                    <div>
+                        <label class="block text-sm font-bold text-slate-400 uppercase tracking-widest mb-2">Device Brand</label>
+                        <select id="price-brand" onchange="updatePrice()" class="w-full p-4 bg-slate-100 dark:bg-slate-900 rounded-2xl border-none outline-none focus:ring-2 focus:ring-primary transition-all dark:text-white appearance-none cursor-pointer">
+                            <option value="apple">Apple iPhone</option>
+                            <option value="samsung">Samsung Galaxy</option>
+                            <option value="google">Google Pixel</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-bold text-slate-400 uppercase tracking-widest mb-2">Repair Needed</label>
+                        <select id="price-repair" onchange="updatePrice()" class="w-full p-4 bg-slate-100 dark:bg-slate-900 rounded-2xl border-none outline-none focus:ring-2 focus:ring-primary transition-all dark:text-white appearance-none cursor-pointer">
+                            <option value="80">Screen Replacement</option>
+                            <option value="45">Battery Replacement</option>
+                            <option value="35">Charging Port Fix</option>
+                            <option value="60">Camera Repair</option>
+                        </select>
+                    </div>
+
+                    <div class="pt-6 border-t dark:border-slate-700 mt-8 flex items-center justify-between">
+                        <div>
+                            <span class="block text-sm font-bold text-slate-400 uppercase">Estimated Total</span>
+                            <div class="text-4xl font-black text-primary">$<span id="display-price">80</span></div>
+                        </div>
+                        <a href="booknow.html" class="bg-primary text-white px-8 py-4 rounded-2xl font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-500/20 active:scale-95">
+                            Book Now
+                        </a>
+                    </div>
+                </div>
+
+                <p class="text-center text-xs text-slate-400 mt-6">
+                    *Final price may vary based on specific model and damage extent.
+                </p>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<script>
+    function updatePrice() {
+        const repairSelect = document.getElementById('price-repair');
+        const display = document.getElementById('display-price');
+        
+        // Simple logic: taking the value from the repair selection
+        let price = repairSelect.value;
+        
+        // Add a small "Apple Tax" for demonstration
+        const brand = document.getElementById('price-brand').value;
+        if(brand === 'apple') {
+            price = parseInt(price) + 20;
+        }
+
+        // Animate the price change
+        display.classList.add('scale-110', 'text-green-500');
+        setTimeout(() => {
+            display.innerText = price;
+            display.classList.remove('scale-110', 'text-green-500');
+        }, 150);
+    }
+</script>
+<section id="services-grid" class="py-20 bg-slate-50 dark:bg-slate-900 transition-colors duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="mb-16">
+            <h2 class="text-4xl md:text-5xl font-black mb-4 dark:text-white">Professional <span class="text-primary">Repair Services</span></h2>
+            <p class="text-slate-500 dark:text-slate-400 max-w-xl">
+                We handle everything from minor screen cracks to complex data recovery. All repairs are performed by certified technicians.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            
+            <div class="group bg-white dark:bg-slate-800 p-8 rounded-[2.5rem] shadow-sm hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 border border-slate-100 dark:border-slate-700 hover:border-primary relative overflow-hidden">
+                <div class="relative z-10">
+                    <div class="w-14 h-14 bg-blue-100 dark:bg-blue-900/30 text-primary rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i data-lucide="smartphone" class="w-7 h-7"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 dark:text-white">Screen Replacement</h3>
+                    <p class="text-slate-500 dark:text-slate-400 mb-8">Cracked, flickering, or unresponsive display? We use OEM-quality glass to restore your view.</p>
+                    
+                    <div class="grid grid-cols-2 gap-4 pt-6 border-t dark:border-slate-700">
+                        <div>
+                            <span class="block text-[10px] font-black text-slate-400 uppercase tracking-widest">Repair Time</span>
+                            <span class="font-bold dark:text-white">30 - 45 Mins</span>
+                        </div>
+                        <div>
+                            <span class="block text-[10px] font-black text-slate-400 uppercase tracking-widest">Warranty</span>
+                            <span class="font-bold text-green-500">90 Days</span>
+                        </div>
+                    </div>
+                    <div class="mt-6 flex items-center justify-between">
+                        <span class="text-2xl font-black text-primary">$79 - $249</span>
+                        <button class="p-3 bg-primary text-white rounded-xl hover:bg-blue-700 transition-colors">
+                            <i data-lucide="arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="group bg-white dark:bg-slate-800 p-8 rounded-[2.5rem] shadow-sm hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 border border-slate-100 dark:border-slate-700 hover:border-primary">
+                <div class="w-14 h-14 bg-green-100 dark:bg-green-900/30 text-green-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                    <i data-lucide="battery-charging" class="w-7 h-7"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-4 dark:text-white">Battery Replacement</h3>
+                <p class="text-slate-500 dark:text-slate-400 mb-8">Phone dying too fast? Get a fresh high-capacity battery and enjoy all-day power again.</p>
+                <div class="grid grid-cols-2 gap-4 pt-6 border-t dark:border-slate-700">
+                    <div>
+                        <span class="block text-[10px] font-black text-slate-400 uppercase tracking-widest">Repair Time</span>
+                        <span class="font-bold dark:text-white">20 Mins</span>
+                    </div>
+                    <div>
+                        <span class="block text-[10px] font-black text-slate-400 uppercase tracking-widest">Warranty</span>
+                        <span class="font-bold text-green-500">6 Months</span>
+                    </div>
+                </div>
+                <div class="mt-6 flex items-center justify-between">
+                    <span class="text-2xl font-black text-primary">$49 - $99</span>
+                    <button class="p-3 bg-primary text-white rounded-xl hover:bg-blue-700 transition-colors">
+                        <i data-lucide="arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="group bg-white dark:bg-slate-800 p-8 rounded-[2.5rem] shadow-sm hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 border border-slate-100 dark:border-slate-700 hover:border-primary">
+                <div class="w-14 h-14 bg-red-100 dark:bg-red-900/30 text-red-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                    <i data-lucide="droplets" class="w-7 h-7"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-4 dark:text-white">Water Damage</h3>
+                <p class="text-slate-500 dark:text-slate-400 mb-8">Dropped in the pool? We offer deep ultrasonic cleaning to save your logic board.</p>
+                <div class="grid grid-cols-2 gap-4 pt-6 border-t dark:border-slate-700">
+                    <div>
+                        <span class="block text-[10px] font-black text-slate-400 uppercase tracking-widest">Repair Time</span>
+                        <span class="font-bold dark:text-white">24 - 48 Hrs</span>
+                    </div>
+                    <div>
+                        <span class="block text-[10px] font-black text-slate-400 uppercase tracking-widest">Success Rate</span>
+                        <span class="font-bold text-blue-500">85%</span>
+                    </div>
+                </div>
+                <div class="mt-6 flex items-center justify-between">
+                    <span class="text-2xl font-black text-primary">From $59</span>
+                    <button class="p-3 bg-primary text-white rounded-xl hover:bg-blue-700 transition-colors">
+                        <i data-lucide="arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="group bg-white dark:bg-slate-800 p-8 rounded-[2.5rem] shadow-sm hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 border border-slate-100 dark:border-slate-700 hover:border-primary">
+                <div class="w-14 h-14 bg-purple-100 dark:bg-purple-900/30 text-purple-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                    <i data-lucide="mic-2" class="w-7 h-7"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-4 dark:text-white">Speaker & Mic</h3>
+                <p class="text-slate-500 dark:text-slate-400 mb-8">Can't hear callers or they can't hear you? We clean or replace audio modules instantly.</p>
+                <div class="grid grid-cols-2 gap-4 pt-6 border-t dark:border-slate-700">
+                    <div>
+                        <span class="block text-[10px] font-black text-slate-400 uppercase tracking-widest">Repair Time</span>
+                        <span class="font-bold dark:text-white">45 Mins</span>
+                    </div>
+                    <div>
+                        <span class="block text-[10px] font-black text-slate-400 uppercase tracking-widest">Warranty</span>
+                        <span class="font-bold text-green-500">90 Days</span>
+                    </div>
+                </div>
+                <div class="mt-6 flex items-center justify-between">
+                    <span class="text-2xl font-black text-primary">$39 - $89</span>
+                    <button class="p-3 bg-primary text-white rounded-xl hover:bg-blue-700 transition-colors">
+                        <i data-lucide="arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="group bg-white dark:bg-slate-800 p-8 rounded-[2.5rem] shadow-sm hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 border border-slate-100 dark:border-slate-700 hover:border-primary">
+                <div class="w-14 h-14 bg-orange-100 dark:bg-orange-900/30 text-orange-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                    <i data-lucide="database" class="w-7 h-7"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-4 dark:text-white">Data Recovery</h3>
+                <p class="text-slate-500 dark:text-slate-400 mb-8">Lost photos or messages? We use advanced tools to retrieve data from dead devices.</p>
+                <div class="grid grid-cols-2 gap-4 pt-6 border-t dark:border-slate-700">
+                    <div>
+                        <span class="block text-[10px] font-black text-slate-400 uppercase tracking-widest">Repair Time</span>
+                        <span class="font-bold dark:text-white">Varies</span>
+                    </div>
+                    <div>
+                        <span class="block text-[10px] font-black text-slate-400 uppercase tracking-widest">Privacy</span>
+                        <span class="font-bold text-blue-500">100% Secure</span>
+                    </div>
+                </div>
+                <div class="mt-6 flex items-center justify-between">
+                    <span class="text-2xl font-black text-primary">Quote Only</span>
+                    <button class="p-3 bg-primary text-white rounded-xl hover:bg-blue-700 transition-colors">
+                        <i data-lucide="arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="group bg-white dark:bg-slate-800 p-8 rounded-[2.5rem] shadow-sm hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 border border-slate-100 dark:border-slate-700 hover:border-primary">
+                <div class="w-14 h-14 bg-pink-100 dark:bg-pink-900/30 text-pink-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                    <i data-lucide="code-2" class="w-7 h-7"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-4 dark:text-white">Software Fixes</h3>
+                <p class="text-slate-500 dark:text-slate-400 mb-8">Stuck on boot loop or forgotten passcode? We flash and restore firmware securely.</p>
+                <div class="grid grid-cols-2 gap-4 pt-6 border-t dark:border-slate-700">
+                    <div>
+                        <span class="block text-[10px] font-black text-slate-400 uppercase tracking-widest">Repair Time</span>
+                        <span class="font-bold dark:text-white">1 - 2 Hrs</span>
+                    </div>
+                    <div>
+                        <span class="block text-[10px] font-black text-slate-400 uppercase tracking-widest">OS Support</span>
+                        <span class="font-bold text-blue-500">iOS & Android</span>
+                    </div>
+                </div>
+                <div class="mt-6 flex items-center justify-between">
+                    <span class="text-2xl font-black text-primary">$29 - $69</span>
+                    <button class="p-3 bg-primary text-white rounded-xl hover:bg-blue-700 transition-colors">
+                        <i data-lucide="arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+<section id="testimonials" class="py-20 bg-white dark:bg-slate-900 transition-colors duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-5xl font-black mb-4 dark:text-white">What Our Customers Say</h2>
+            <div class="flex justify-center items-center gap-1 text-yellow-400 mb-4">
+                <i data-lucide="star" class="fill-current w-5 h-5"></i>
+                <i data-lucide="star" class="fill-current w-5 h-5"></i>
+                <i data-lucide="star" class="fill-current w-5 h-5"></i>
+                <i data-lucide="star" class="fill-current w-5 h-5"></i>
+                <i data-lucide="star" class="fill-current w-5 h-5"></i>
+                <span class="ml-2 text-slate-900 dark:text-white font-bold">4.9/5 Rating</span>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+            
+            <div class="flex flex-col p-8 bg-slate-50 dark:bg-slate-800 rounded-[2rem] border border-transparent hover:border-primary/30 hover:shadow-xl transition-all duration-300 group">
+                <div class="flex items-center gap-4 mb-6">
+                    <img src="assets/indext1" alt="Sarah J." class="w-14 h-14 rounded-full object-cover border-2 border-white dark:border-slate-700 shadow-sm">
+                    <div>
+                        <h4 class="font-bold dark:text-white">Sarah Jenkins</h4>
+                        <div class="flex items-center gap-1 text-green-500 text-[10px] font-black uppercase tracking-widest">
+                            <i data-lucide="badge-check" class="w-3 h-3"></i> Verified Repair
+                        </div>
+                    </div>
+                </div>
+                <p class="text-slate-600 dark:text-slate-400 leading-relaxed italic flex-grow">
+                    "Dropped my iPhone 15 right before a meeting. The technician at the kiosk fixed the screen in exactly 25 minutes. Saved my day!"
+                </p>
+            </div>
+
+            <div class="flex flex-col p-8 bg-slate-50 dark:bg-slate-800 rounded-[2rem] border border-transparent hover:border-primary/30 hover:shadow-xl transition-all duration-300 group relative overflow-hidden">
+                <i data-lucide="quote" class="absolute -top-4 -right-4 w-24 h-24 text-slate-200 dark:text-slate-700/30 -rotate-12 pointer-events-none"></i>
+                <div class="relative z-10 flex flex-col h-full">
+                    <div class="flex items-center gap-4 mb-6">
+                        <img src="assets/indext2" alt="Michael R." class="w-16 h-16 rounded-full object-cover border-2 border-white dark:border-slate-700 shadow-md group-hover:border-primary transition-colors">
+                        <div>
+                            <h4 class="font-black text-lg dark:text-white tracking-tight">Michael Ross</h4>
+                            <div class="flex text-amber-400 mt-1"><i data-lucide="star" class="w-3 h-3 fill-current"></i><i data-lucide="star" class="w-3 h-3 fill-current"></i><i data-lucide="star" class="w-3 h-3 fill-current"></i><i data-lucide="star" class="w-3 h-3 fill-current"></i><i data-lucide="star" class="w-3 h-3 fill-current"></i></div>
+                        </div>
+                    </div>
+                    <p class="text-slate-600 dark:text-slate-400 leading-relaxed italic text-lg flex-grow">
+                        "Incredible service. I was skeptical about kiosk repairs, but they used genuine parts and even gave me a 90-day warranty."
+                    </p>
+                    <div class="mt-6 pt-6 border-t border-slate-200 dark:border-slate-700/50 flex justify-between items-center text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                        <span>2 Days Ago</span>
+                        <span class="flex items-center gap-1 text-primary"><i data-lucide="smartphone" class="w-3 h-3"></i> Galaxy S23</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex flex-col p-8 bg-slate-50 dark:bg-slate-800 rounded-[2rem] border border-transparent hover:border-primary/30 hover:shadow-xl transition-all duration-300 group">
+                <div class="flex items-center gap-4 mb-6">
+                    <img src="assets/indext3" alt="Elena G." class="w-14 h-14 rounded-full object-cover border-2 border-white dark:border-slate-700 shadow-sm">
+                    <div>
+                        <h4 class="font-bold dark:text-white">Elena Gomez</h4>
+                        <div class="flex items-center gap-1 text-green-500 text-[10px] font-black uppercase tracking-widest">
+                            <i data-lucide="badge-check" class="w-3 h-3"></i> Verified Repair
+                        </div>
+                    </div>
+                </div>
+                <p class="text-slate-600 dark:text-slate-400 leading-relaxed italic flex-grow">
+                    "Quickest battery replacement ever. I walked around the mall for 15 minutes and it was done. Fair pricing too!"
+                </p>
+            </div>
+            
+            <div class="flex flex-col p-8 bg-slate-50 dark:bg-slate-800 rounded-[2rem] border border-transparent hover:border-primary/30 hover:shadow-xl transition-all duration-300 group">
+                <div class="flex items-center gap-4 mb-6">
+                    <img src="assets/indext3" alt="Elena G." class="w-14 h-14 rounded-full object-cover border-2 border-white dark:border-slate-700 shadow-sm">
+                    <div>
+                        <h4 class="font-bold dark:text-white">Elena Gomez</h4>
+                        <div class="flex items-center gap-1 text-green-500 text-[10px] font-black uppercase tracking-widest">
+                            <i data-lucide="badge-check" class="w-3 h-3"></i> Verified Repair
+                        </div>
+                    </div>
+                </div>
+                <p class="text-slate-600 dark:text-slate-400 leading-relaxed italic flex-grow">
+                    "Quickest battery replacement ever. I walked around the mall for 15 minutes and it was done. Fair pricing too!"
+                </p>
+            </div>
+            
+            <div class="flex flex-col p-8 bg-slate-50 dark:bg-slate-800 rounded-[2rem] border border-transparent hover:border-primary/30 hover:shadow-xl transition-all duration-300 group">
+                <div class="flex items-center gap-4 mb-6">
+                    <img src="assets/indext3" alt="Elena G." class="w-14 h-14 rounded-full object-cover border-2 border-white dark:border-slate-700 shadow-sm">
+                    <div>
+                        <h4 class="font-bold dark:text-white">Elena Gomez</h4>
+                        <div class="flex items-center gap-1 text-green-500 text-[10px] font-black uppercase tracking-widest">
+                            <i data-lucide="badge-check" class="w-3 h-3"></i> Verified Repair
+                        </div>
+                    </div>
+                </div>
+                <p class="text-slate-600 dark:text-slate-400 leading-relaxed italic flex-grow">
+                    "Quickest battery replacement ever. I walked around the mall for 15 minutes and it was done. Fair pricing too!"
+                </p>
+            </div>
+            
+            <div class="flex flex-col p-8 bg-slate-50 dark:bg-slate-800 rounded-[2rem] border border-transparent hover:border-primary/30 hover:shadow-xl transition-all duration-300 group">
+                <div class="flex items-center gap-4 mb-6">
+                    <img src="assets/indext3" alt="Elena G." class="w-14 h-14 rounded-full object-cover border-2 border-white dark:border-slate-700 shadow-sm">
+                    <div>
+                        <h4 class="font-bold dark:text-white">Elena Gomez</h4>
+                        <div class="flex items-center gap-1 text-green-500 text-[10px] font-black uppercase tracking-widest">
+                            <i data-lucide="badge-check" class="w-3 h-3"></i> Verified Repair
+                        </div>
+                    </div>
+                </div>
+                <p class="text-slate-600 dark:text-slate-400 leading-relaxed italic flex-grow">
+                    "Quickest battery replacement ever. I walked around the mall for 15 minutes and it was done. Fair pricing too!"
+                </p>
+            </div>
+
+        </div>
+
+        <div class="mt-16 text-center">
+            <button class="bg-primary/10 text-primary px-8 py-4 rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-primary hover:text-white transition-all active:scale-95 shadow-lg shadow-blue-500/5">
+                Read More Reviews
+            </button>
+        </div>
+    </div>
+</section>
+<!-- <section id="testimonials" class="py-20 bg-white dark:bg-slate-900 transition-colors duration-300 overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-5xl font-black mb-4 dark:text-white">What Our Customers Say</h2>
+            <div class="flex justify-center gap-1 text-yellow-400 mb-4">
+                <i data-lucide="star" class="fill-current"></i>
+                <i data-lucide="star" class="fill-current"></i>
+                <i data-lucide="star" class="fill-current"></i>
+                <i data-lucide="star" class="fill-current"></i>
+                <i data-lucide="star" class="fill-current"></i>
+                <span class="ml-2 text-slate-900 dark:text-white font-bold">4.9/5 Rating</span>
+            </div>
+        </div>
+
+        <div class="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
+            
+            <div class="break-inside-avoid p-8 bg-slate-50 dark:bg-slate-800 rounded-[2rem] border border-transparent hover:border-primary/30 hover:shadow-xl transition-all duration-300 group">
+                <div class="flex items-center gap-4 mb-6">
+                    <img src="assets/indext1" 
+                         alt="Sarah J." class="w-14 h-14 rounded-full object-cover border-2 border-white dark:border-slate-700 shadow-sm">
+                    <div>
+                        <h4 class="font-bold dark:text-white">Sarah Jenkins</h4>
+                        <div class="flex items-center gap-1 text-green-500 text-xs font-bold uppercase">
+                            <i data-lucide="badge-check" class="w-3 h-3"></i> Verified Repair
+                        </div>
+                    </div>
+                </div>
+                <p class="text-slate-600 dark:text-slate-400 leading-relaxed italic">
+                    "Dropped my iPhone 15 right before a meeting. The technician at the kiosk fixed the screen in exactly 25 minutes. Saved my day!"
+                </p>
+            </div>
+
+            <div class="break-inside-avoid p-8 bg-slate-50 dark:bg-slate-800 rounded-[2rem] border border-transparent hover:border-primary/30 hover:shadow-xl transition-all duration-300 group">
+                <div class="flex items-center gap-4 mb-6">
+                    <img src="assets/indext2" 
+                         alt="Michael R." class="w-14 h-14 rounded-full object-cover border-2 border-white dark:border-slate-700 shadow-sm">
+                    <div>
+                        <h4 class="font-bold dark:text-white">Michael Ross</h4>
+                        <div class="flex items-center gap-1 text-green-500 text-xs font-bold uppercase">
+                            <i data-lucide="badge-check" class="w-3 h-3"></i> Verified Repair
+                        </div>
+                    </div>
+                </div>
+                <p class="text-slate-600 dark:text-slate-400 leading-relaxed italic">
+                    "Incredible service. I was skeptical about kiosk repairs, but they used genuine parts and even gave me a 90-day warranty. My Galaxy S23 is like new."
+                </p>
+            </div>
+
+            <div class="break-inside-avoid p-8 bg-slate-50 dark:bg-slate-800 rounded-[2rem] border border-transparent hover:border-primary/30 hover:shadow-xl transition-all duration-300 group">
+                <div class="flex items-center gap-4 mb-6">
+                    <img src="assets/indext3" 
+                         alt="Elena G." class="w-14 h-14 rounded-full object-cover border-2 border-white dark:border-slate-700 shadow-sm">
+                    <div>
+                        <h4 class="font-bold dark:text-white">Elena Gomez</h4>
+                        <div class="flex items-center gap-1 text-green-500 text-xs font-bold uppercase">
+                            <i data-lucide="badge-check" class="w-3 h-3"></i> Verified Repair
+                        </div>
+                    </div>
+                </div>
+                <p class="text-slate-600 dark:text-slate-400 leading-relaxed italic">
+                    "Quickest battery replacement ever. I walked around the mall for 15 minutes and it was done. Fair pricing too!"
+                </p>
+            </div>
+            <div class="max-w-md mx-auto">
+    <div class="break-inside-avoid p-8 bg-slate-50 dark:bg-slate-800 rounded-[2.5rem] border border-transparent hover:border-primary/30 hover:shadow-2xl hover:-translate-y-1 transition-all duration-500 group relative overflow-hidden">
+        
+        <i data-lucide="quote" class="absolute -top-4 -right-4 w-24 h-24 text-slate-200 dark:text-slate-700/30 -rotate-12 pointer-events-none"></i>
+
+        <div class="relative z-10">
+            <div class="flex items-center gap-4 mb-6">
+                <div class="relative">
+                    <img src="assets/indext1" 
+                         alt="Michael R." 
+                         class="w-16 h-16 rounded-full object-cover border-2 border-white dark:border-slate-700 shadow-md group-hover:border-primary transition-colors">
+                    <div class="absolute -bottom-1 -right-1 bg-green-500 text-white rounded-full p-1 border-2 border-slate-50 dark:border-slate-800">
+                        <i data-lucide="badge-check" class="w-3 h-3"></i>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-black text-lg dark:text-white tracking-tight">Michael Ross</h4>
+                    <div class="flex items-center gap-1 mt-1">
+                        <div class="flex text-amber-400">
+                            <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                            <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                            <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                            <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                            <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                        </div>
+                        <span class="text-[10px] font-black text-green-600 dark:text-green-400 uppercase tracking-widest ml-1">Verified Repair</span>
+                    </div>
+                </div>
+            </div>
+
+            <p class="text-slate-600 dark:text-slate-400 leading-relaxed italic text-lg">
+                "Incredible service. I was skeptical about kiosk repairs, but they used genuine parts and even gave me a 90-day warranty. My Galaxy S23 is like new."
+            </p>
+            
+            <div class="mt-6 pt-6 border-t border-slate-200 dark:border-slate-700/50 flex justify-between items-center">
+                <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">2 Days Ago</span>
+                <div class="flex items-center gap-2">
+                    <i data-lucide="smartphone" class="w-4 h-4 text-primary"></i>
+                    <span class="text-xs font-bold dark:text-slate-300">Samsung S23</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Refresh icons
+    if (window.lucide) {
+        lucide.createIcons();
+    }
+</script>
+        </div>
+
+        <div class="mt-16 text-center">
+            <button class="bg-primary/10 text-primary px-8 py-3 rounded-xl font-bold hover:bg-primary hover:text-white transition-all">
+                Read More Reviews
+            </button>
+        </div>
+    </div>
+</section> -->
+<section id="booknow" class="py-20 bg-white dark:bg-slate-900 transition-colors duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="relative bg-primary rounded-[3rem] overflow-hidden shadow-2xl shadow-blue-500/40">
+            
+            <div class="absolute top-0 right-0 -mt-20 -mr-20 w-80 h-80 bg-white/10 rounded-full blur-3xl transition-transform duration-700 hover:scale-150"></div>
+            <div class="absolute bottom-0 left-0 -mb-20 -ml-20 w-64 h-64 bg-black/10 rounded-full blur-2xl"></div>
+
+            <div class="relative z-10 grid lg:grid-cols-2 gap-12 items-center p-8 md:p-16">
+                
+                <div class="text-white">
+                    <h2 class="text-4xl md:text-6xl font-black mb-6 leading-tight">
+                        Ready to Fix Your Phone Today?
+                    </h2>
+                    <p class="text-blue-100 text-lg mb-10 max-w-md">
+                        Don't wait weeks for a repair. Walk into our nearest kiosk and get your device fixed in under 30 minutes. 
+                        <span class="font-bold border-b border-blue-300/50">No appointment needed!</span>
+                    </p>
+                    
+                    <div class="flex flex-wrap gap-6">
+                        <div class="flex items-center gap-3">
+                            <div class="bg-white/20 p-2 rounded-lg backdrop-blur-md">
+                                <i data-lucide="check" class="w-5 h-5"></i>
+                            </div>
+                            <span class="font-bold">Original Parts</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <div class="bg-white/20 p-2 rounded-lg backdrop-blur-md">
+                                <i data-lucide="check" class="w-5 h-5"></i>
+                            </div>
+                            <span class="font-bold">90-Day Warranty</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col items-center lg:items-end gap-6">
+                    <div class="bg-white/10 backdrop-blur-xl border border-white/20 p-8 rounded-[2.5rem] w-full max-w-sm text-center transform transition-transform hover:rotate-2">
+                        <p class="text-white text-sm font-bold uppercase tracking-widest mb-4">Average Repair Time</p>
+                        <div class="text-7xl font-black text-white mb-2">25<span class="text-3xl text-blue-200 uppercase ml-1 tracking-tighter">Mins</span></div>
+                        <p class="text-blue-100 text-xs mb-8 italic">Fastest service in the city center</p>
+                        <a href="contact.html">
+                              <button class="w-full bg-white text-primary py-4 rounded-2xl font-black text-xl hover:bg-blue-50 hover:shadow-2xl hover:shadow-white/20 transition-all active:scale-95">
+                            Locate Nearest Kiosk
+                        </button>
+                        </a>
+                      
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+    </main>
+
+   <footer class="bg-white dark:bg-slate-950 pt-20 pb-10 border-t dark:border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+        
+        <div class="space-y-6">
+            <a href="index.html" class="flex items-center gap-2">
+                <div class="bg-primary p-2 rounded-xl shadow-lg shadow-blue-500/30">
+                    <i data-lucide="smartphone" class="text-white w-6 h-6"></i>
+                </div>
+                <span class="text-2xl font-black tracking-tighter dark:text-white">FIX<span class="text-primary">IT</span></span>
+            </a>
+            <!-- <span class="text-2xl font-black block tracking-tighter dark:text-white">FIX<span class="text-primary">IT</span></span> -->
+            <p class="text-slate-500 dark:text-slate-400 leading-relaxed">
+                Premium smartphone repair service at your nearest kiosk. 30-minute turnaround guaranteed.
+            </p>
+            <div class="flex gap-3">
+                <a href="#" class="p-3 bg-slate-100 dark:bg-slate-800 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-primary hover:text-white transition-all active:scale-90">
+                    <i data-lucide="facebook" class="w-5 h-5"></i>
+                </a>
+                <a href="#" class="p-3 bg-slate-100 dark:bg-slate-800 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-primary hover:text-white transition-all active:scale-90">
+                    <i data-lucide="instagram" class="w-5 h-5"></i>
+                </a>
+                <a href="#" class="p-3 bg-slate-100 dark:bg-slate-800 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-primary hover:text-white transition-all active:scale-90">
+                    <i data-lucide="twitter" class="w-5 h-5"></i>
+                </a>
+                <a href="#" class="p-3 bg-slate-100 dark:bg-slate-800 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-primary hover:text-white transition-all active:scale-90">
+                    <i data-lucide="youtube" class="w-5 h-5"></i>
+                </a>
+            </div>
+        </div>
+
+        <div>
+            <h4 class="font-bold mb-6 text-lg dark:text-white">Quick Links</h4>
+            <ul class="space-y-4">
+                <li><a href="index.html" class="text-slate-500 hover:text-primary transition-colors flex items-center gap-2"><i data-lucide="chevron-right" class="w-4 h-4"></i> Home</a></li>
+                <li><a href="service.html" class="text-slate-500 hover:text-primary transition-colors flex items-center gap-2"><i data-lucide="chevron-right" class="w-4 h-4"></i> Services</a></li>
+                <li><a href="aboutus.html" class="text-slate-500 hover:text-primary transition-colors flex items-center gap-2"><i data-lucide="chevron-right" class="w-4 h-4"></i> Aboutus</a></li>
+                <li><a href="booknow.html" class="text-slate-500 hover:text-primary transition-colors flex items-center gap-2"><i data-lucide="chevron-right" class="w-4 h-4"></i> Book Now</a></li>
+            </ul>
+        </div>
+
+        <div>
+            <h4 class="font-bold mb-6 text-lg dark:text-white">Support</h4>
+            <ul class="space-y-4">
+                <li><a href="404.html" class="text-slate-500 hover:text-primary transition-colors flex items-center gap-2"><i data-lucide="alert-circle" class="w-4 h-4"></i> 404 Error Page</a></li>
+                <li><a href="comingsoon.html" class="text-slate-500 hover:text-primary transition-colors flex items-center gap-2"><i data-lucide="clock" class="w-4 h-4"></i> Coming Soon</a></li>
+                <li><a href="contact.html" class="text-slate-500 hover:text-primary transition-colors flex items-center gap-2"><i data-lucide="help-circle" class="w-4 h-4"></i> Contact Support</a></li>
+                <li><a href="home2.html" class="text-slate-500 hover:text-primary transition-colors flex items-center gap-2"><i data-lucide="shield-check" class="w-4 h-4"></i> Home2</a></li>
+            </ul>
+        </div>
+
+        <div>
+            <h4 class="font-bold mb-6 text-lg dark:text-white">Newsletter</h4>
+            <p class="text-sm text-slate-500 mb-4">Subscribe to get repair discounts and tech tips.</p>
+            <form onsubmit="event.preventDefault()" class="flex flex-col gap-3">
+                <div class="relative">
+                    <i data-lucide="mail" class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400"></i>
+                    <input type="email" placeholder="Email Address" class="w-full bg-slate-100 dark:bg-slate-800 p-4 pl-12 rounded-xl border-none outline-none focus:ring-2 focus:ring-primary transition-all">
+                </div>
+                <button class="bg-primary text-white py-3 rounded-xl font-bold hover:bg-blue-700 shadow-lg shadow-blue-500/20 active:scale-95 transition-all">
+                    Subscribe
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 mt-20 pt-8 border-t border-slate-100 dark:border-slate-800 flex flex-col md:flex-row justify-between items-center gap-4 text-slate-500 text-sm text-center">
+        <p>© 2026 FixIt Kiosk. All rights reserved.</p>
+        <p>Made for High-Conversion Business</p>
+    </div>
+</footer>
+
+    <script>
+        const state = {
+            theme: localStorage.getItem('theme') || 'light',
+            dir: localStorage.getItem('dir') || 'ltr'
+        };
+
+        function updateUI() {
+            // Apply Theme
+            const html = document.documentElement;
+            if (state.theme === 'dark') {
+                html.classList.add('dark');
+                document.getElementById('sun-icon').classList.remove('hidden');
+                document.getElementById('moon-icon').classList.add('hidden');
+            } else {
+                html.classList.remove('dark');
+                document.getElementById('sun-icon').classList.add('hidden');
+                document.getElementById('moon-icon').classList.remove('hidden');
+            }
+
+            // Apply Direction
+            html.dir = state.dir;
+            const dirLabel = document.getElementById('dir-label');
+            if(dirLabel) dirLabel.innerText = state.dir.toUpperCase();
+
+            // Refresh Icons
+            lucide.createIcons();
+        }
+
+        function toggleTheme() {
+            state.theme = state.theme === 'light' ? 'dark' : 'light';
+            localStorage.setItem('theme', state.theme);
+            updateUI();
+        }
+
+        function toggleDirection() {
+            state.dir = state.dir === 'ltr' ? 'rtl' : 'ltr';
+            localStorage.setItem('dir', state.dir);
+            updateUI();
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const icon = document.getElementById('menu-icon');
+            const isHidden = menu.classList.toggle('hidden');
+            icon.setAttribute('data-lucide', isHidden ? 'menu' : 'x');
+            lucide.createIcons();
+        }
+function updateUI() {
+    const currentDir = localStorage.getItem('dir') || 'ltr';
+    document.documentElement.dir = currentDir;
+    
+    // This will update the label on whichever version is visible
+    const labels = document.querySelectorAll('[id^="dir-label"]');
+    labels.forEach(label => {
+        label.innerText = currentDir.toUpperCase();
+    });
+
+    lucide.createIcons();
+}
+        // Initialize Page
+        window.addEventListener('DOMContentLoaded', updateUI);
+    </script>
+    <script>
+    // Initialize state
+    // const state = {
+    //     theme: localStorage.getItem('theme') || 'light',
+    //     dir: localStorage.getItem('dir') || 'ltr'
+    // };
+
+    function updateUI() {
+        const html = document.documentElement;
+        
+        // 1. Handle Theme
+        if (state.theme === 'dark') {
+            html.classList.add('dark');
+            document.getElementById('sun-icon')?.classList.remove('hidden');
+            document.getElementById('moon-icon')?.classList.add('hidden');
+        } else {
+            html.classList.remove('dark');
+            document.getElementById('sun-icon')?.classList.add('hidden');
+            document.getElementById('moon-icon')?.classList.remove('hidden');
+        }
+
+        // 2. Handle Direction
+        html.dir = state.dir;
+        const labels = document.querySelectorAll('[id^="dir-label"]');
+        labels.forEach(label => {
+            label.innerText = state.dir.toUpperCase();
+        });
+
+        // 3. Refresh Icons
+        lucide.createIcons();
+    }
+
+    function toggleTheme() {
+        // Toggle the state
+        state.theme = state.theme === 'light' ? 'dark' : 'light';
+        // Save to local storage
+        localStorage.setItem('theme', state.theme);
+        // Update the page
+        updateUI();
+    }
+
+    // Initialize on load
+    window.addEventListener('DOMContentLoaded', updateUI);
+</script>
+
+<script>
+    // const state = {
+    //     theme: localStorage.getItem('theme') || 'light',
+    //     dir: localStorage.getItem('dir') || 'ltr'
+    // };
+
+    function updateUI() {
+        const html = document.documentElement;
+        
+        // Handle Theme
+        if (state.theme === 'dark') {
+            html.classList.add('dark');
+            document.getElementById('sun-icon')?.classList.remove('hidden');
+            document.getElementById('moon-icon')?.classList.add('hidden');
+        } else {
+            html.classList.remove('dark');
+            document.getElementById('sun-icon')?.classList.add('hidden');
+            document.getElementById('moon-icon')?.classList.remove('hidden');
+        }
+
+        // Handle Direction
+        html.dir = state.dir;
+        
+        // Target all labels by Class
+        const allLabels = document.querySelectorAll('.dir-status-label');
+        allLabels.forEach(label => {
+            label.textContent = state.dir.toUpperCase();
+        });
+
+        // Re-run icons
+        if (window.lucide) {
+            lucide.createIcons();
+        }
+    }
+
+    function toggleDirection() {
+        state.dir = state.dir === 'ltr' ? 'rtl' : 'ltr';
+        localStorage.setItem('dir', state.dir);
+        updateUI();
+    }
+
+    function toggleTheme() {
+        state.theme = state.theme === 'light' ? 'dark' : 'light';
+        localStorage.setItem('theme', state.theme);
+        updateUI();
+    }
+
+    function toggleMobileMenu() {
+        const menu = document.getElementById('mobile-menu');
+        const icon = document.getElementById('menu-icon');
+        const isHidden = menu.classList.toggle('hidden');
+        
+        // CRITICAL: Update UI again when menu opens to ensure visibility
+        if (!isHidden) {
+            updateUI(); 
+            if (icon) icon.setAttribute('data-lucide', 'x');
+        } else {
+            if (icon) icon.setAttribute('data-lucide', 'menu');
+        }
+        lucide.createIcons();
+    }
+
+    window.addEventListener('DOMContentLoaded', updateUI);
+</script>
+</body>
+</html>

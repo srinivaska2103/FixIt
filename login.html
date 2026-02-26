@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <title>FixIt | Secure Access</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: { primary: '#2563eb' }
+                }
+            }
+        }
+    </script>
+    <style>
+        .auth-transition { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        body { 
+            transition: background-color 0.3s, color 0.3s;
+            overflow: hidden; /* Prevent body scrolling */
+        }
+        /* Custom scrollbar for the form area if text overflows on very small screens */
+        .custom-scroll::-webkit-scrollbar { width: 4px; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 h-screen w-screen flex flex-col">
+
+    <header class="fixed top-0 left-0 right-0 h-16 flex justify-between items-center px-6 z-50 bg-slate-50/80 dark:bg-slate-950/80 backdrop-blur-md">
+      <a href="index.html">
+ <div class="flex items-center gap-2">
+            <div class="bg-primary p-1.5 rounded-lg"><i data-lucide="smartphone" class="text-white w-4 h-4"></i></div>
+            <span class="text-lg font-bold tracking-tighter">FIX<span class="text-primary">IT</span></span>
+        </div>
+      </a>
+       
+        <div class="flex gap-2">
+            <button onclick="toggleDirection()" class="bg-white dark:bg-slate-800 border dark:border-slate-700 px-3 py-1.5 rounded-xl text-xs font-bold shadow-sm active:scale-95 transition">
+                <span id="dir-label">LTR</span>
+            </button>
+            <button onclick="toggleTheme()" class="p-2 bg-white dark:bg-slate-800 border dark:border-slate-700 rounded-xl shadow-sm active:scale-95 transition">
+                <i data-lucide="sun" id="sun-icon" class="w-4 h-4 text-yellow-500 hidden"></i>
+                <i data-lucide="moon" id="moon-icon" class="w-4 h-4 text-slate-600 dark:text-blue-400"></i>
+            </button>
+        </div>
+    </header>
+
+    <main class="flex-grow flex items-center justify-center p-4 md:p-8 mt-16 overflow-hidden">
+        <div class="bg-white dark:bg-slate-900 w-full max-w-5xl h-full max-h-[700px] rounded-[2rem] md:rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col md:flex-row border dark:border-slate-800">
+            
+            <div class="hidden md:flex md:w-5/12 lg:w-1/2 bg-primary p-10 flex-col justify-between relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-32 -mt-32 blur-3xl"></div>
+                <div class="relative z-10">
+                    <h2 class="text-3xl lg:text-4xl font-black text-white leading-tight mb-4">Repair Tracking <br>at your fingertips.</h2>
+                    <p class="text-blue-100 text-sm lg:text-base opacity-90">Join thousands of users tracking their device repairs in real-time.</p>
+                </div>
+                
+                <div class="relative z-10 bg-white/10 backdrop-blur-lg border border-white/20 p-5 rounded-2xl">
+                    <div class="flex items-center gap-4 mb-3">
+                        <div class="w-10 h-10 bg-green-400 rounded-full flex items-center justify-center">
+                            <i data-lucide="check" class="text-white w-5 h-5"></i>
+                        </div>
+                        <div class="text-white">
+                            <p class="font-bold text-sm">Device Fixed!</p>
+                            <p class="text-[10px] opacity-70">Ready for pickup at Kiosk #4</p>
+                        </div>
+                    </div>
+                    <div class="h-1.5 w-full bg-white/20 rounded-full overflow-hidden">
+                        <div class="h-full bg-white w-full"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex-1 p-6 sm:p-10 lg:p-16 flex flex-col justify-center relative overflow-y-auto custom-scroll">
+                
+                <div id="login-form" class="auth-transition w-full max-w-sm mx-auto">
+                    <h1 class="text-2xl sm:text-3xl font-black mb-1">Welcome Back</h1>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 mb-6">Enter details to access account.</p>
+
+                    <form onsubmit="event.preventDefault()" class="space-y-4">
+                        <div>
+                            <label class="block text-[10px] font-bold uppercase text-slate-400 mb-1 ml-1">Email Address</label>
+                            <input type="email" placeholder="name@company.com" class="w-full p-3.5 bg-slate-50 dark:bg-slate-800 rounded-xl outline-none focus:ring-2 focus:ring-primary border-none transition-all dark:text-white text-sm">
+                        </div>
+                        <div>
+                            <div class="flex justify-between items-center mb-1 ml-1">
+                                <label class="block text-[10px] font-bold uppercase text-slate-400">Password</label>
+                                <a href="#" class="text-[10px] font-bold text-primary hover:underline">Forgot?</a>
+                            </div>
+                            <input type="password" placeholder="••••••••" class="w-full p-3.5 bg-slate-50 dark:bg-slate-800 rounded-xl outline-none focus:ring-2 focus:ring-primary border-none transition-all dark:text-white text-sm">
+                        </div>
+                        <button class="w-full bg-primary text-white py-3.5 rounded-xl font-bold shadow-lg shadow-blue-500/30 hover:bg-blue-700 transition-all active:scale-[0.98]">
+                            Sign In
+                        </button>
+                    </form>
+
+                    <div class="relative my-6">
+                        <div class="absolute inset-0 flex items-center"><span class="w-full border-t dark:border-slate-800"></span></div>
+                        <div class="relative flex justify-center text-[10px] uppercase"><span class="bg-white dark:bg-slate-900 px-2 text-slate-500">Or continue with</span></div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <button class="flex items-center justify-center gap-2 py-2.5 border dark:border-slate-800 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition active:scale-95">
+                            <i data-lucide="github" class="w-4 h-4"></i> <span class="text-xs font-bold">Github</span>
+                        </button>
+                        <button class="flex items-center justify-center gap-2 py-2.5 border dark:border-slate-800 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition active:scale-95">
+                            <i data-lucide="chrome" class="w-4 h-4"></i> <span class="text-xs font-bold">Google</span>
+                        </button>
+                    </div>
+
+                    <p class="text-center mt-6 text-xs text-slate-500">
+                        Don't have an account? <button onclick="switchForm('signup')" class="text-primary font-bold hover:underline">Sign Up</button>
+                    </p>
+                </div>
+
+                <div id="signup-form" class="auth-transition hidden opacity-0 translate-x-8 w-full max-w-sm mx-auto">
+                    <h1 class="text-2xl sm:text-3xl font-black mb-1">Create Account</h1>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 mb-6">Start tracking repairs today.</p>
+
+                    <form onsubmit="event.preventDefault()" class="space-y-3">
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-[10px] font-bold uppercase text-slate-400 mb-1 ml-1">First Name</label>
+                                <input type="text" placeholder="John" class="w-full p-3 bg-slate-50 dark:bg-slate-800 rounded-xl outline-none focus:ring-2 focus:ring-primary transition-all dark:text-white text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold uppercase text-slate-400 mb-1 ml-1">Last Name</label>
+                                <input type="text" placeholder="Doe" class="w-full p-3 bg-slate-50 dark:bg-slate-800 rounded-xl outline-none focus:ring-2 focus:ring-primary transition-all dark:text-white text-sm">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold uppercase text-slate-400 mb-1 ml-1">Email</label>
+                            <input type="email" placeholder="john@example.com" class="w-full p-3 bg-slate-50 dark:bg-slate-800 rounded-xl outline-none focus:ring-2 focus:ring-primary transition-all dark:text-white text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold uppercase text-slate-400 mb-1 ml-1">Password</label>
+                            <input type="password" placeholder="Min. 8 chars" class="w-full p-3 bg-slate-50 dark:bg-slate-800 rounded-xl outline-none focus:ring-2 focus:ring-primary transition-all dark:text-white text-sm">
+                        </div>
+                        <button class="w-full bg-primary text-white py-3.5 rounded-xl font-bold shadow-lg active:scale-[0.98] transition-all">
+                            Create Account
+                        </button>
+                    </form>
+
+                    <p class="text-center mt-6 text-xs text-slate-500">
+                        Already have an account? <button onclick="switchForm('login')" class="text-primary font-bold hover:underline">Sign In</button>
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function switchForm(type) {
+            const login = document.getElementById('login-form');
+            const signup = document.getElementById('signup-form');
+
+            if (type === 'signup') {
+                login.classList.add('hidden', 'opacity-0');
+                signup.classList.remove('hidden');
+                setTimeout(() => signup.classList.remove('opacity-0', 'translate-x-8'), 50);
+            } else {
+                signup.classList.add('hidden', 'opacity-0', 'translate-x-8');
+                login.classList.remove('hidden');
+                setTimeout(() => login.classList.remove('opacity-0'), 50);
+            }
+        }
+
+        const html = document.documentElement;
+        
+        function updateUI() {
+            const theme = localStorage.getItem('theme') || 'light';
+            if (theme === 'dark') {
+                html.classList.add('dark');
+                document.getElementById('sun-icon').classList.remove('hidden');
+                document.getElementById('moon-icon').classList.add('hidden');
+            } else {
+                html.classList.remove('dark');
+                document.getElementById('sun-icon').classList.add('hidden');
+                document.getElementById('moon-icon').classList.remove('hidden');
+            }
+
+            const dir = localStorage.getItem('dir') || 'ltr';
+            html.dir = dir;
+            document.getElementById('dir-label').innerText = dir.toUpperCase();
+
+            lucide.createIcons();
+        }
+
+        function toggleTheme() {
+            const current = localStorage.getItem('theme') === 'dark' ? 'light' : 'dark';
+            localStorage.setItem('theme', current);
+            updateUI();
+        }
+
+        function toggleDirection() {
+            const current = html.dir === 'ltr' ? 'rtl' : 'ltr';
+            localStorage.setItem('dir', current);
+            updateUI();
+        }
+
+        window.onload = updateUI;
+    </script>
+</body>
+</html>

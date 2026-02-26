@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <title>404 | Connection Lost</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: { primary: '#2563eb' }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { 
+            transition: background-color 0.3s, color 0.3s;
+            overflow: hidden; 
+        }
+        .float-animation {
+            animation: float 6s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 h-screen w-screen flex flex-col font-sans">
+
+    <header class="fixed top-0 left-0 right-0 h-20 flex justify-between items-center px-8 z-50">
+         <a href="index.html">
+        <div class="flex items-center gap-2">
+         
+
+         
+            <div class="bg-primary p-2 rounded-xl shadow-lg shadow-blue-500/20">
+                <i data-lucide="smartphone" class="text-white w-5 h-5"></i>
+            </div>
+            <span class="text-2xl font-black tracking-tighter">FIX<span class="text-primary">IT</span></span>
+        </div>
+         </a>
+        <div class="flex gap-3">
+            <button onclick="toggleDirection()" class="bg-white dark:bg-slate-800 border dark:border-slate-700 px-4 py-2 rounded-2xl text-xs font-black shadow-sm active:scale-95 transition-all">
+                <span id="dir-label">LTR</span>
+            </button>
+            <button onclick="toggleTheme()" class="p-3 bg-white dark:bg-slate-800 border dark:border-slate-700 rounded-2xl shadow-sm active:scale-95 transition-all">
+                <i data-lucide="sun" id="sun-icon" class="w-5 h-5 text-yellow-500 hidden"></i>
+                <i data-lucide="moon" id="moon-icon" class="w-5 h-5 text-slate-600 dark:text-blue-400"></i>
+            </button>
+        </div>
+    </header>
+
+    <main class="flex-grow flex flex-col items-center justify-center p-6 text-center relative">
+        
+        <div class="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
+            <h1 class="text-[25vw] font-black text-slate-200/50 dark:text-slate-800/30 leading-none">404</h1>
+        </div>
+
+        <div class="relative z-10 flex flex-col items-center max-w-2xl">
+            <div class="w-32 h-32 md:w-40 md:h-40 bg-blue-100 dark:bg-blue-900/30 rounded-[3rem] flex items-center justify-center mb-8 float-animation">
+                <i data-lucide="unplug" class="w-16 h-16 md:w-20 md:h-20 text-primary"></i>
+            </div>
+
+            <h2 class="text-4xl md:text-6xl font-black mb-4 dark:text-white tracking-tight">
+                Oops! Signal <span class="text-primary">Lost.</span>
+            </h2>
+            
+            <p class="text-lg text-slate-500 dark:text-slate-400 mb-10 px-4">
+                We couldn't find the page you're looking for. It might have been moved or the screen is cracked (just kidding, that's what we fix!).
+            </p>
+
+            <div class="flex flex-col sm:flex-row gap-4 w-full justify-center">
+                <a href="index.html" class="px-8 py-4 bg-primary text-white rounded-2xl font-bold text-lg shadow-xl shadow-blue-500/30 hover:bg-blue-700 transition-all active:scale-95 text-center">
+                    Return to Home
+                </a>
+                <a href="contact" class="px-8 py-4 bg-white dark:bg-slate-800 border dark:border-slate-700 rounded-2xl font-bold text-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-all text-center">
+                    Report Issue
+                </a>
+            </div>
+        </div>
+
+        <div class="absolute bottom-10 left-10 hidden lg:block opacity-20">
+            <i data-lucide="wrench" class="w-12 h-12 rotate-12"></i>
+        </div>
+        <div class="absolute top-40 right-20 hidden lg:block opacity-20">
+            <i data-lucide="wifi-off" class="w-16 h-16 -rotate-12"></i>
+        </div>
+    </main>
+
+    <footer class="p-8 text-center text-xs text-slate-400 font-bold tracking-widest uppercase">
+        Error Code: ERR_PAGE_NOT_FOUND
+    </footer>
+
+    <script>
+        const html = document.documentElement;
+        
+        function updateUI() {
+            // Theme Logic
+            const theme = localStorage.getItem('theme') || 'light';
+            if (theme === 'dark') {
+                html.classList.add('dark');
+                document.getElementById('sun-icon').classList.remove('hidden');
+                document.getElementById('moon-icon').classList.add('hidden');
+            } else {
+                html.classList.remove('dark');
+                document.getElementById('sun-icon').classList.add('hidden');
+                document.getElementById('moon-icon').classList.remove('hidden');
+            }
+
+            // Direction Logic
+            const dir = localStorage.getItem('dir') || 'ltr';
+            html.dir = dir;
+            document.getElementById('dir-label').innerText = dir.toUpperCase();
+
+            // Refresh Lucide Icons
+            lucide.createIcons();
+        }
+
+        function toggleTheme() {
+            const current = localStorage.getItem('theme') === 'dark' ? 'light' : 'dark';
+            localStorage.setItem('theme', current);
+            updateUI();
+        }
+
+        function toggleDirection() {
+            const current = html.dir === 'ltr' ? 'rtl' : 'ltr';
+            localStorage.setItem('dir', current);
+            updateUI();
+        }
+
+        // Initialize on load
+        window.onload = updateUI;
+    </script>
+</body>
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <title>Coming Soon | FixIt Innovation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: { primary: '#2563eb' }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { 
+            transition: background-color 0.3s, color 0.3s;
+            overflow: hidden; 
+        }
+        .pulse-slow {
+            animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 0.1; transform: scale(1); }
+            50% { opacity: 0.3; transform: scale(1.1); }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 h-screen w-screen flex flex-col font-sans">
+
+    <header class="fixed top-0 left-0 right-0 h-20 flex justify-between items-center px-8 z-50">
+      <a href="index.html">
+<div class="flex items-center gap-2">
+            <div class="bg-primary p-2 rounded-xl shadow-lg shadow-blue-500/20">
+                <i data-lucide="smartphone" class="text-white w-5 h-5"></i>
+            </div>
+            <span class="text-2xl font-black tracking-tighter">FIX<span class="text-primary">IT</span></span>
+        </div>
+      </a>
+        
+        <div class="flex gap-3">
+            <button onclick="toggleDirection()" class="bg-white dark:bg-slate-800 border dark:border-slate-700 px-4 py-2 rounded-2xl text-xs font-black shadow-sm active:scale-95 transition-all">
+                <span id="dir-label">LTR</span>
+            </button>
+            <button onclick="toggleTheme()" class="p-3 bg-white dark:bg-slate-800 border dark:border-slate-700 rounded-2xl shadow-sm active:scale-95 transition-all">
+                <i data-lucide="sun" id="sun-icon" class="w-5 h-5 text-yellow-500 hidden"></i>
+                <i data-lucide="moon" id="moon-icon" class="w-5 h-5 text-slate-600 dark:text-blue-400"></i>
+            </button>
+        </div>
+    </header>
+
+    <main class="flex-grow flex flex-col items-center justify-center p-6 text-center relative">
+        
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-primary/20 rounded-full blur-[120px] pulse-slow pointer-events-none"></div>
+
+        <div class="relative z-10 flex flex-col items-center max-w-3xl">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-xs font-black uppercase tracking-widest mb-8">
+                <i data-lucide="rocket" class="w-4 h-4"></i> Launching Spring 2026
+            </div>
+
+            <h1 class="text-5xl md:text-8xl font-black mb-6 dark:text-white tracking-tighter leading-none">
+                SOMETHING <br> <span class="text-primary">BIG</span> IS COMING.
+            </h1>
+            
+            <p class="text-lg md:text-xl text-slate-500 dark:text-slate-400 mb-12 max-w-xl mx-auto leading-relaxed">
+                We're upgrading our kiosks with AI-powered diagnostics and 15-minute express repairs. Join the waitlist for exclusive launch discounts.
+            </p>
+
+            <div class="w-full max-w-md bg-white/50 dark:bg-slate-800/50 backdrop-blur-xl p-2 rounded-[2rem] border border-white dark:border-slate-700 shadow-2xl flex flex-col sm:flex-row gap-2 transition-all hover:border-primary/50">
+                <input type="email" placeholder="Enter your email" class="flex-1 bg-transparent p-4 rounded-2xl outline-none text-sm font-bold dark:text-white placeholder:text-slate-400">
+                <button class="bg-primary text-white px-8 py-4 rounded-2xl font-bold shadow-lg shadow-blue-500/20 hover:bg-blue-700 transition-all active:scale-95">
+                    Notify Me
+                </button>
+            </div>
+
+            <div class="mt-12 flex gap-6 text-slate-400">
+                <a href="#" class="hover:text-primary transition-colors"><i data-lucide="instagram"></i></a>
+                <a href="#" class="hover:text-primary transition-colors"><i data-lucide="twitter"></i></a>
+                <a href="#" class="hover:text-primary transition-colors"><i data-lucide="linkedin"></i></a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="p-8 text-center text-[10px] text-slate-400 font-black tracking-[0.3em] uppercase">
+        Stay Tuned • FixIt Kiosks • 2026
+    </footer>
+
+    <script>
+        const html = document.documentElement;
+        
+        function updateUI() {
+            // Theme Logic
+            const theme = localStorage.getItem('theme') || 'light';
+            if (theme === 'dark') {
+                html.classList.add('dark');
+                document.getElementById('sun-icon').classList.remove('hidden');
+                document.getElementById('moon-icon').classList.add('hidden');
+            } else {
+                html.classList.remove('dark');
+                document.getElementById('sun-icon').classList.add('hidden');
+                document.getElementById('moon-icon').classList.remove('hidden');
+            }
+
+            // Direction Logic
+            const dir = localStorage.getItem('dir') || 'ltr';
+            html.dir = dir;
+            document.getElementById('dir-label').innerText = dir.toUpperCase();
+
+            // Refresh Lucide Icons
+            lucide.createIcons();
+        }
+
+        function toggleTheme() {
+            const current = localStorage.getItem('theme') === 'dark' ? 'light' : 'dark';
+            localStorage.setItem('theme', current);
+            updateUI();
+        }
+
+        function toggleDirection() {
+            const current = html.dir === 'ltr' ? 'rtl' : 'ltr';
+            localStorage.setItem('dir', current);
+            updateUI();
+        }
+
+        window.onload = updateUI;
+    </script>
+</body>
+</html>

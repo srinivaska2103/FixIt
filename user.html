@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <title>FixIt | Customer Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: { colors: { primary: '#2563eb' } }
+            }
+        }
+    </script>
+    <style>
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.3s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        body { transition: background-color 0.3s, color 0.3s; }
+        /* Hide scrollbars but keep functionality */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col md:flex-row overflow-x-hidden">
+  <!-- <a href="index.html" class="flex items-center gap-2 relative z-[100] pointer-events-auto">
+    <div class="bg-primary p-2 rounded-xl shadow-lg shadow-blue-500/30">
+        <i data-lucide="smartphone" class="text-white w-6 h-6"></i>
+    </div>
+    <span class="text-2xl font-black tracking-tighter dark:text-white uppercase">
+        FIX<span class="text-primary">IT</span>
+    </span>
+</a>
+    <aside class="hidden md:flex w-72 bg-white dark:bg-slate-900 border-r dark:border-slate-800 flex-col sticky top-0 h-screen p-6 z-40">
+
+       
+
+     <nav class="flex-grow space-y-2 px-2">
+    <button onclick="switchTab('booking')" 
+            class="nav-link group w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl font-bold transition-all duration-200 
+                   hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:text-primary">
+        <i data-lucide="calendar-plus" class="w-5 h-5 transition-transform group-hover:scale-110"></i> 
+        <span>Book Repair</span>
+    </button>
+
+    <button onclick="switchTab('tracking')" 
+            class="nav-link group w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl font-bold transition-all duration-200 
+                   hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:text-primary">
+        <i data-lucide="activity" class="w-5 h-5 transition-transform group-hover:scale-110"></i> 
+        <span>Track Status</span>
+    </button>
+
+    <button onclick="switchTab('quotes')" 
+            class="nav-link group w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl font-bold transition-all duration-200 
+                   hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:text-primary">
+        <i data-lucide="calculator" class="w-5 h-5 transition-transform group-hover:scale-110"></i> 
+        <span>Upfront Quotes</span>
+    </button>
+</nav>
+
+        <div class="pt-6 border-t dark:border-slate-800 space-y-3">
+            <div class="flex gap-2">
+                <button onclick="toggleTheme()" class="flex-1 p-3 bg-slate-100 dark:bg-slate-800 rounded-xl flex justify-center">
+                    <i data-lucide="sun" id="sun-icon" class="w-5 h-5 text-yellow-500 hidden"></i>
+                    <i data-lucide="moon" id="moon-icon" class="w-5 h-5 text-blue-400"></i>
+                </button>
+                <button onclick="toggleDirection()" class="flex-1 p-3 bg-slate-100 dark:bg-slate-800 rounded-xl font-black text-xs dir-label">LTR</button>
+            </div>
+            <a href="/index.html">
+<button class="w-full flex items-center gap-3 px-4 py-3 text-red-500 font-bold">
+                <i data-lucide="log-out" class="w-5 h-5"></i> Logout
+            </button>
+            </a>
+            
+        </div>
+    </aside> -->
+<aside class="hidden md:flex w-72 bg-white dark:bg-slate-900 border-r dark:border-slate-800 flex-col sticky top-0 h-screen p-6 z-50">
+
+    <a href="index.html" class="flex items-center gap-3 mb-10 px-2 group relative z-[100]">
+        <div class="bg-primary p-2 rounded-xl shadow-lg shadow-blue-500/30 group-hover:scale-110 transition-transform">
+            <i data-lucide="smartphone" class="text-white w-6 h-6"></i>
+        </div>
+        <span class="text-2xl font-black tracking-tighter dark:text-white uppercase">
+            FIX<span class="text-primary">IT</span>
+        </span>
+    </a>
+
+    <nav class="flex-grow space-y-2">
+        <button onclick="switchTab('booking')" 
+                class="nav-link group w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl font-bold transition-all duration-200 
+                       hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:text-primary dark:text-slate-300">
+            <i data-lucide="calendar-plus" class="w-5 h-5 transition-transform group-hover:scale-110"></i> 
+            <span>Book Repair</span>
+        </button>
+
+        <button onclick="switchTab('tracking')" 
+                class="nav-link group w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl font-bold transition-all duration-200 
+                       hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:text-primary dark:text-slate-300">
+            <i data-lucide="activity" class="w-5 h-5 transition-transform group-hover:scale-110"></i> 
+            <span>Track Status</span>
+        </button>
+
+        <button onclick="switchTab('quotes')" 
+                class="nav-link group w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl font-bold transition-all duration-200 
+                       hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:text-primary dark:text-slate-300">
+            <i data-lucide="calculator" class="w-5 h-5 transition-transform group-hover:scale-110"></i> 
+            <span>Upfront Quotes</span>
+        </button>
+    </nav>
+
+    <div class="pt-6 border-t dark:border-slate-800 space-y-4">
+        <div class="flex gap-3">
+            <button onclick="toggleTheme()" class="flex-1 p-3 bg-slate-100 dark:bg-slate-800 rounded-xl flex justify-center hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+                <i data-lucide="sun" id="sun-icon" class="w-5 h-5 text-yellow-500 hidden"></i>
+                <i data-lucide="moon" id="moon-icon" class="w-5 h-5 text-blue-400"></i>
+            </button>
+            <button onclick="toggleDirection()" class="flex-1 p-3 bg-slate-100 dark:bg-slate-800 rounded-xl font-black text-xs dir-label dark:text-white hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+                LTR
+            </button>
+        </div>
+        
+        <a href="index.html" class="block group">
+            <button class="w-full flex items-center gap-3 px-4 py-3 text-red-500 font-bold rounded-2xl hover:bg-red-50 dark:hover:bg-red-900/10 transition-all">
+                <i data-lucide="log-out" class="w-5 h-5 group-hover:-translate-x-1 transition-transform"></i> 
+                Logout
+            </button>
+        </a>
+    </div>
+</aside>
+    <header class="md:hidden flex items-center justify-between p-4 bg-white dark:bg-slate-900 border-b dark:border-slate-800 sticky top-0 z-50">
+         <a href="index.html">
+        <div class="flex items-center gap-2">
+           
+                 <div class="bg-primary p-1.5 rounded-lg text-white"><i data-lucide="smartphone" class="w-4 h-4"></i></div>
+            <span class="font-black tracking-tighter">FIXIT</span>
+        </div>
+            </a>
+           
+        <div class="flex items-center gap-3">
+            <button onclick="toggleTheme()" class="p-2 bg-slate-100 dark:bg-slate-800 rounded-lg">
+                <i data-lucide="moon" class="w-4 h-4 moon-mobile"></i>
+            </button>
+            <button onclick="toggleMobileMenu()" class="p-2 bg-primary text-white rounded-lg">
+                <i data-lucide="menu" id="menu-icon"></i>
+            </button>
+        </div>
+    </header>
+
+    <div id="mobile-menu" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-[60] hidden md:hidden">
+        <div class="absolute bottom-0 left-0 right-0 bg-white dark:bg-slate-900 rounded-t-[2.5rem] p-6 space-y-4 shadow-2xl">
+            <div class="w-12 h-1.5 bg-slate-200 dark:bg-slate-700 rounded-full mx-auto mb-4"></div>
+            <button onclick="switchTab('booking'); toggleMobileMenu()" class="w-full flex items-center gap-4 p-4 rounded-2xl bg-slate-100 dark:bg-slate-800 font-bold">
+                <i data-lucide="calendar-plus" class="text-primary"></i> Book Repair
+            </button>
+            <button onclick="switchTab('tracking'); toggleMobileMenu()" class="w-full flex items-center gap-4 p-4 rounded-2xl bg-slate-100 dark:bg-slate-800 font-bold">
+                <i data-lucide="activity" class="text-primary"></i> Track Status
+            </button>
+            <button onclick="switchTab('quotes'); toggleMobileMenu()" class="w-full flex items-center gap-4 p-4 rounded-2xl bg-slate-100 dark:bg-slate-800 font-bold">
+                <i data-lucide="calculator" class="text-primary"></i> Upfront Quotes
+            </button>
+            <div class="grid grid-cols-2 gap-3 pt-2">
+                <button onclick="toggleDirection()" class="p-4 bg-slate-100 dark:bg-slate-800 rounded-2xl font-black text-xs dir-label">LTR</button>
+               <a href="index.html">
+                               <button class="p-4 bg-red-100 text-red-600 rounded-2xl font-black text-xs">LOGOUT</button>
+
+            </a>
+            </div>
+        </div>
+    </div>
+
+    <main class="flex-grow p-4 md:p-10 lg:p-16">
+        
+        <section id="booking" class="tab-content active max-w-4xl">
+            <h1 class="text-3xl md:text-5xl font-black mb-2 tracking-tighter">Book a <span class="text-primary">Repair Slot.</span></h1>
+            <p class="text-slate-500 mb-10">Select your preferred kiosk and time for instant service.</p>
+
+            <form class="space-y-6 bg-white dark:bg-slate-900 p-6 md:p-10 rounded-[2.5rem] shadow-xl border dark:border-slate-800">
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="space-y-2">
+                        <label class="text-[10px] font-black uppercase text-slate-400 ml-1">Device Type</label>
+                        <select class="w-full p-4 bg-slate-50 dark:bg-slate-800 rounded-2xl outline-none focus:ring-2 focus:ring-primary dark:text-white border-none cursor-pointer">
+                            <option>iPhone 15 Pro Max</option>
+                            <option>Samsung S24 Ultra</option>
+                            <option>Google Pixel 8</option>
+                        </select>
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-[10px] font-black uppercase text-slate-400 ml-1">Kiosk Location</label>
+                        <select class="w-full p-4 bg-slate-50 dark:bg-slate-800 rounded-2xl outline-none focus:ring-2 focus:ring-primary dark:text-white border-none cursor-pointer">
+                            <option>Central Mall - Level 2</option>
+                            <option>Tech Plaza - Entrance A</option>
+                            <option>Airport Terminal - Gate 4</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="space-y-2">
+                    <label class="text-[10px] font-black uppercase text-slate-400 ml-1">Available Time Slots</label>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                        <button type="button" class="p-3 bg-slate-50 dark:bg-slate-800 border-2 border-transparent hover:border-primary rounded-xl text-sm font-bold transition-all">10:30 AM</button>
+                        <button type="button" class="p-3 bg-slate-50 dark:bg-slate-800 border-2 border-transparent hover:border-primary rounded-xl text-sm font-bold transition-all">12:00 PM</button>
+                        <button type="button" class="p-3 bg-primary text-white rounded-xl text-sm font-bold">02:15 PM</button>
+                        <button type="button" class="p-3 bg-slate-50 dark:bg-slate-800 border-2 border-transparent hover:border-primary rounded-xl text-sm font-bold transition-all">04:45 PM</button>
+                    </div>
+                </div>
+                <button class="w-full bg-primary text-white py-5 rounded-[1.5rem] font-black text-lg shadow-xl shadow-blue-500/30 hover:bg-blue-700 transition-all active:scale-95">CONFIRM BOOKING</button>
+            </form>
+        </section>
+
+       <section id="tracking" class="tab-content max-w-5xl">
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+        <div>
+            <h1 class="text-3xl md:text-5xl font-black tracking-tighter">Repair <span class="text-primary">Tracker.</span></h1>
+            <p class="text-slate-500 mt-2">Monitor your active repairs and view service history.</p>
+        </div>
+        <div class="relative group">
+            <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400"></i>
+            <input type="text" placeholder="Search Repair ID..." class="pl-11 pr-4 py-3 bg-white dark:bg-slate-900 border dark:border-slate-800 rounded-2xl outline-none focus:ring-2 focus:ring-primary transition-all text-sm w-full md:w-64">
+        </div>
+    </div>
+    
+    <div class="space-y-8">
+        <div class="bg-white dark:bg-slate-900 rounded-[2.5rem] shadow-xl border-2 border-primary overflow-hidden transition-all hover:shadow-blue-500/10">
+            <div class="bg-primary/5 dark:bg-primary/10 px-6 py-4 border-b dark:border-slate-800 flex justify-between items-center">
+                <div class="flex items-center gap-2">
+                    <span class="relative flex h-3 w-3">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-3 w-3 bg-primary"></span>
+                    </span>
+                    <span class="text-xs font-black uppercase tracking-widest text-primary">Live Status: Testing</span>
+                </div>
+                <button class="text-[10px] font-black uppercase text-slate-400 hover:text-primary transition-colors">Need Help?</button>
+            </div>
+
+            <div class="p-6 md:p-10">
+                <div class="flex flex-col lg:flex-row justify-between gap-10">
+                    <div class="space-y-6">
+                        <div>
+                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-1">Order #FIX-9821</p>
+                            <h3 class="text-3xl font-black dark:text-white">iPhone 14 Pro <span class="text-primary text-lg font-bold block md:inline md:ml-2">OLED Screen Fix</span></h3>
+                        </div>
+                        
+                        <div class="flex flex-wrap gap-6">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center">
+                                    <i data-lucide="clock" class="w-5 h-5 text-primary"></i>
+                                </div>
+                                <div>
+                                    <p class="text-[10px] font-black text-slate-400 uppercase">Est. Ready</p>
+                                    <p class="text-sm font-bold dark:text-white">~ 18 Mins</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-xl bg-green-50 dark:bg-green-900/20 flex items-center justify-center">
+                                    <i data-lucide="map-pin" class="w-5 h-5 text-green-500"></i>
+                                </div>
+                                <div>
+                                    <p class="text-[10px] font-black text-slate-400 uppercase">Pickup Location</p>
+                                    <p class="text-sm font-bold dark:text-white">Kiosk #04 (Level 2)</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex-grow lg:max-w-md space-y-6">
+                        <div class="relative py-2">
+                            <div class="h-3 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                                <div class="h-full bg-primary rounded-full w-3/4 shadow-[0_0_15px_rgba(37,99,235,0.4)] transition-all duration-1000"></div>
+                            </div>
+                            <div class="flex justify-between mt-4">
+                                <div class="flex flex-col items-center gap-2">
+                                    <div class="w-2 h-2 rounded-full bg-primary"></div>
+                                    <span class="text-[9px] font-black uppercase text-slate-400">Received</span>
+                                </div>
+                                <div class="flex flex-col items-center gap-2">
+                                    <div class="w-2 h-2 rounded-full bg-primary"></div>
+                                    <span class="text-[9px] font-black uppercase text-slate-400">Repairing</span>
+                                </div>
+                                <div class="flex flex-col items-center gap-2">
+                                    <div class="w-4 h-4 rounded-full bg-primary border-4 border-blue-100 dark:border-blue-900/30 -mt-1"></div>
+                                    <span class="text-[9px] font-black uppercase text-primary">Testing</span>
+                                </div>
+                                <div class="flex flex-col items-center gap-2">
+                                    <div class="w-2 h-2 rounded-full bg-slate-200 dark:bg-slate-700"></div>
+                                    <span class="text-[9px] font-black uppercase text-slate-300">Ready</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-dashed border-slate-200 dark:border-slate-700">
+                            <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+                                <span class="font-bold text-primary italic">Latest Update:</span> Our technician is currently running post-repair diagnostic tests to ensure touch sensitivity is 100% perfect.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <h4 class="text-xl font-black mb-6 flex items-center gap-2 dark:text-white">
+                <i data-lucide="history" class="w-5 h-5 text-slate-400"></i> Past Repairs
+            </h4>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="p-6 bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800 hover:shadow-lg transition-all flex justify-between items-center group">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-2xl bg-slate-50 dark:bg-slate-800 flex items-center justify-center text-slate-400">
+                            <i data-lucide="check-circle" class="w-6 h-6 text-green-500"></i>
+                        </div>
+                        <div>
+                            <h5 class="font-bold text-sm dark:text-white">iPhone 12 - Battery</h5>
+                            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Oct 12, 2025 • $59.00</p>
+                        </div>
+                    </div>
+                    <button class="p-2 opacity-0 group-hover:opacity-100 transition-opacity text-primary hover:bg-primary/10 rounded-lg">
+                        <i data-lucide="download" class="w-4 h-4"></i>
+                    </button>
+                </div>
+
+                <div class="p-6 bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800 hover:shadow-lg transition-all flex justify-between items-center group">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-2xl bg-slate-50 dark:bg-slate-800 flex items-center justify-center text-slate-400">
+                            <i data-lucide="check-circle" class="w-6 h-6 text-green-500"></i>
+                        </div>
+                        <div>
+                            <h5 class="font-bold text-sm dark:text-white">Pixel 7 - Camera Port</h5>
+                            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Aug 04, 2025 • $89.00</p>
+                        </div>
+                    </div>
+                    <button class="p-2 opacity-0 group-hover:opacity-100 transition-opacity text-primary hover:bg-primary/10 rounded-lg">
+                        <i data-lucide="download" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+  <section id="quotes" class="tab-content max-w-6xl">
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+        <div>
+            <h1 class="text-3xl md:text-5xl font-black tracking-tighter">Upfront <span class="text-primary">Estimates.</span></h1>
+            <p class="text-slate-500 mt-2">Instant, transparent pricing based on your specific model.</p>
+        </div>
+        <div class="flex bg-white dark:bg-slate-900 p-1.5 rounded-2xl border dark:border-slate-800 shadow-sm">
+            <button class="px-4 py-2 bg-primary text-white text-xs font-bold rounded-xl shadow-lg shadow-blue-500/20 transition-all">USD</button>
+            <button class="px-4 py-2 text-slate-400 text-xs font-bold rounded-xl hover:text-primary transition-all">EUR</button>
+        </div>
+    </div>
+
+    <div class="grid lg:grid-cols-12 gap-8">
+        <div class="lg:col-span-5 space-y-6">
+            <div class="bg-white dark:bg-slate-900 p-8 rounded-[2.5rem] shadow-xl border dark:border-slate-800 sticky top-10">
+                <h3 class="text-xl font-black mb-6 flex items-center gap-2 dark:text-white">
+                    <i data-lucide="zap" class="text-primary w-5 h-5"></i> Instant Quote Tool
+                </h3>
+                
+                <div class="space-y-4">
+                    <div class="space-y-2">
+                        <label class="text-[10px] font-black uppercase text-slate-400 ml-1">Select Brand</label>
+                        <select onchange="updateQuote()" id="quote-brand" class="w-full p-4 bg-slate-50 dark:bg-slate-800 rounded-2xl border-none outline-none focus:ring-2 focus:ring-primary dark:text-white cursor-pointer transition-all">
+                            <option value="1">Apple iPhone</option>
+                            <option value="0.9">Samsung Galaxy</option>
+                            <option value="0.85">Google Pixel</option>
+                        </select>
+                    </div>
+                    
+                    <div class="space-y-2">
+                        <label class="text-[10px] font-black uppercase text-slate-400 ml-1">Repair Category</label>
+                        <select onchange="updateQuote()" id="quote-repair" class="w-full p-4 bg-slate-50 dark:bg-slate-800 rounded-2xl border-none outline-none focus:ring-2 focus:ring-primary dark:text-white cursor-pointer transition-all">
+                            <option value="129">Screen Replacement</option>
+                            <option value="69">Battery Swap</option>
+                            <option value="89">Camera Module</option>
+                            <option value="49">Charging Port</option>
+                        </select>
+                    </div>
+
+                    <div class="pt-6 mt-6 border-t dark:border-slate-800">
+                        <div class="flex justify-between items-center mb-6">
+                            <span class="text-sm font-bold text-slate-500 uppercase">Estimated Price</span>
+                            <div class="text-4xl font-black text-primary transition-all duration-300" id="quote-price-box">$129.00</div>
+                        </div>
+                        <button class="w-full bg-primary text-white py-4 rounded-2xl font-black shadow-lg shadow-blue-500/30 hover:bg-blue-700 transition-all active:scale-95">
+                            SECURE THIS PRICE
+                        </button>
+                        <p class="text-[10px] text-center text-slate-400 mt-4 font-bold uppercase tracking-widest italic">Price includes labor & 90-day warranty</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="lg:col-span-7 grid md:grid-cols-2 gap-6">
+            <div class="p-8 bg-white dark:bg-slate-900 rounded-[2.5rem] shadow-lg border-2 border-transparent hover:border-primary group transition-all duration-500">
+                <div class="w-12 h-12 bg-blue-50 dark:bg-blue-900/30 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                    <i data-lucide="smartphone" class="text-primary"></i>
+                </div>
+                <h4 class="font-black text-xl mb-2 dark:text-white">Screen Excellence</h4>
+                <p class="text-slate-500 dark:text-slate-400 text-sm mb-6 leading-relaxed">Genuine-grade OLED panels with TrueTone support and oleophobic coating.</p>
+                <div class="flex items-center gap-2 text-xs font-black text-green-500 uppercase tracking-widest">
+                    <i data-lucide="check" class="w-4 h-4"></i> 30 Min Fix
+                </div>
+            </div>
+
+            <div class="p-8 bg-white dark:bg-slate-900 rounded-[2.5rem] shadow-lg border-2 border-transparent hover:border-primary group transition-all duration-500">
+                <div class="w-12 h-12 bg-green-50 dark:bg-green-900/30 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                    <i data-lucide="zap" class="text-green-500"></i>
+                </div>
+                <h4 class="font-black text-xl mb-2 dark:text-white">Power Restore</h4>
+                <p class="text-slate-500 dark:text-slate-400 text-sm mb-6 leading-relaxed">High-cycle batteries that restore your device to 100% health capacity.</p>
+                <div class="flex items-center gap-2 text-xs font-black text-green-500 uppercase tracking-widest">
+                    <i data-lucide="check" class="w-4 h-4"></i> Safe Disposal
+                </div>
+            </div>
+
+            <div class="p-8 bg-white dark:bg-slate-900 rounded-[2.5rem] shadow-lg border-2 border-transparent hover:border-primary group transition-all duration-500">
+                <div class="w-12 h-12 bg-red-50 dark:bg-red-900/30 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                    <i data-lucide="droplets" class="text-red-500"></i>
+                </div>
+                <h4 class="font-black text-xl mb-2 dark:text-white">Liquid Recovery</h4>
+                <p class="text-slate-500 dark:text-slate-400 text-sm mb-6 leading-relaxed">Ultrasonic cleaning and component-level board repair for water spills.</p>
+                <div class="flex items-center gap-2 text-xs font-black text-orange-500 uppercase tracking-widest">
+                    <i data-lucide="alert-circle" class="w-4 h-4"></i> Expert Diagnostic
+                </div>
+            </div>
+
+            <div class="p-8 bg-white dark:bg-slate-900 rounded-[2.5rem] shadow-lg border-2 border-transparent hover:border-primary group transition-all duration-500">
+                <div class="w-12 h-12 bg-purple-50 dark:bg-purple-900/30 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                    <i data-lucide="stethoscope" class="text-purple-500"></i>
+                </div>
+                <h4 class="font-black text-xl mb-2 dark:text-white">Free Health Check</h4>
+                <p class="text-slate-500 dark:text-slate-400 text-sm mb-6 leading-relaxed">Full 25-point hardware diagnostic to find hidden software or hardware issues.</p>
+                <div class="flex items-center gap-2 text-xs font-black text-primary uppercase tracking-widest">
+                    <i data-lucide="info" class="w-4 h-4"></i> $0 with any fix
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    function toggleMobileMenu() {
+    const menu = document.getElementById('mobile-menu');
+    menu.classList.toggle('hidden'); // This is critical for mobile clickability
+}
+    function updateQuote() {
+        const brandMultiplier = parseFloat(document.getElementById('quote-brand').value);
+        const baseRepairPrice = parseFloat(document.getElementById('quote-repair').value);
+        const priceDisplay = document.getElementById('quote-price-box');
+        
+        const finalPrice = (brandMultiplier * baseRepairPrice).toFixed(2);
+        
+        // Add a "Pulse" animation to the price
+        priceDisplay.classList.add('scale-110', 'text-green-500');
+        setTimeout(() => {
+            priceDisplay.textContent = `$${finalPrice}`;
+            priceDisplay.classList.remove('scale-110', 'text-green-500');
+        }, 150);
+    }
+</script>
+
+    </main>
+
+    <script>
+        // --- DASHBOARD LOGIC ---
+        const state = {
+            theme: localStorage.getItem('theme') || 'light',
+            dir: localStorage.getItem('dir') || 'ltr'
+        };
+
+        function updateUI() {
+            const html = document.documentElement;
+            // Theme
+            if (state.theme === 'dark') {
+                html.classList.add('dark');
+                document.getElementById('sun-icon')?.classList.remove('hidden');
+                document.getElementById('moon-icon')?.classList.add('hidden');
+            } else {
+                html.classList.remove('dark');
+                document.getElementById('sun-icon')?.classList.add('hidden');
+                document.getElementById('moon-icon')?.classList.remove('hidden');
+            }
+
+            // Direction
+            html.dir = state.dir;
+            document.querySelectorAll('.dir-label').forEach(el => el.innerText = state.dir.toUpperCase());
+
+            lucide.createIcons();
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('bg-primary', 'text-white', 'shadow-lg', 'shadow-blue-500/30'));
+            
+            const activeTab = document.getElementById(tabId);
+            activeTab.classList.add('active');
+            
+            // Add active styles to desktop nav
+            const activeLink = document.querySelector(`[onclick="switchTab('${tabId}')"]`);
+            if(activeLink) {
+                activeLink.classList.add('bg-primary', 'text-white', 'shadow-lg', 'shadow-blue-500/30');
+            }
+        }
+
+        function toggleTheme() {
+            state.theme = state.theme === 'light' ? 'dark' : 'light';
+            localStorage.setItem('theme', state.theme);
+            updateUI();
+        }
+
+        function toggleDirection() {
+            state.dir = state.dir === 'ltr' ? 'rtl' : 'ltr';
+            localStorage.setItem('dir', state.dir);
+            updateUI();
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const isHidden = menu.classList.toggle('hidden');
+            document.getElementById('menu-icon').setAttribute('data-lucide', isHidden ? 'menu' : 'x');
+            lucide.createIcons();
+        }
+
+        // Initialize
+        window.onload = () => {
+            updateUI();
+            switchTab('booking');
+        };
+    </script>
+</body>
+</html>
