@@ -30,160 +30,106 @@
 </head>
 <body class="bg-slate-50 text-slate-900 dark:bg-slate-900 dark:text-slate-100 min-h-screen font-sans transition-all-custom">
 
-  <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-900/80 border-b dark:border-slate-800 glass">
+ <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-900/80 border-b dark:border-slate-800 glass">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-20 items-center">
             
-            <a href="index.html" class="flex items-center gap-2">
+            <a href="index.html" class="flex items-center gap-2 shrink-0">
                 <div class="bg-primary p-2 rounded-xl shadow-lg shadow-blue-500/30">
                     <i data-lucide="smartphone" class="text-white w-6 h-6"></i>
                 </div>
                 <span class="text-2xl font-black tracking-tighter dark:text-white">FIX<span class="text-primary">IT</span></span>
             </a>
 
-            <div class="hidden lg:flex space-x-8 rtl:space-x-reverse items-center">
-                <a href="index.html" class="nav-link font-semibold transition hover:text-primary">Home</a>
-                 <a href="home2.html" class="nav-link font-semibold transition hover:text-primary">Home2</a>
-                <a href="booknow.html" class="nav-link font-semibold transition hover:text-primary">Book Now</a>
-                 <a href="aboutus.html" class="nav-link font-semibold transition hover:text-primary">About Us</a>
-                <a href="service.html" class="nav-link font-semibold transition hover:text-primary">Services</a>
-                <!-- <a href="#gallery" class="nav-link font-semibold transition hover:text-primary">Gallery</a> -->
-                <a href="pricing.html" class="nav-link font-semibold transition hover:text-primary">Pricing</a>
-                <a href="contact.html" class="nav-link font-semibold transition hover:text-primary">Contact</a>
+            <div class="hidden lg:flex lg:space-x-5 xl:space-x-8 rtl:space-x-reverse items-center">
+                <a href="index.html" class="nav-link font-semibold transition hover:text-primary dark:text-slate-200">Home</a>
+                <a href="home2.html" class="nav-link font-semibold transition hover:text-primary dark:text-slate-200">Home2</a>
+                <a href="booknow.html" class="nav-link font-semibold transition hover:text-primary dark:text-slate-200">Book</a>
+                <a href="aboutus.html" class="nav-link font-semibold transition hover:text-primary dark:text-slate-200">About</a>
+                <a href="service.html" class="nav-link font-semibold transition hover:text-primary dark:text-slate-200">Services</a>
+                <a href="pricing.html" class="nav-link font-semibold transition hover:text-primary dark:text-slate-200">Pricing</a>
+                <a href="contact.html" class="nav-link font-semibold transition hover:text-primary dark:text-slate-200">Contact</a>
                 
-                            
                 <div class="relative">
-    <button onclick="toggleDropdown(event)" 
-            class="flex items-center gap-1 font-semibold hover:text-primary py-2 dark:text-slate-200 transition-colors focus:outline-none"
-            id="dashboard-btn">
-        Dashboard <i data-lucide="chevron-down" id="dropdown-icon" class="w-4 h-4 transition-transform duration-300"></i>
-    </button>
-    
-    <div id="dashboard-menu" 
-         class="absolute right-0 mt-2 w-56 bg-white dark:bg-slate-900 border dark:border-slate-800 rounded-[1.2rem] shadow-2xl hidden opacity-0 translate-y-2 transition-all duration-300 overflow-hidden z-[100]">
-        
-        <div class="p-2 space-y-1">
-            <a href="user.html" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:text-primary transition-all font-medium dark:text-slate-200">
-                <i data-lucide="user" class="w-4 h-4"></i> Profile Settings
-            </a>
-            
-        </div>
-    </div>
-</div>
-
-<script>
-    function toggleDropdown(event) {
-        // Prevent click from bubbling up to the window listener
-        event.stopPropagation();
-        
-        const menu = document.getElementById('dashboard-menu');
-        const icon = document.getElementById('dropdown-icon');
-        const isHidden = menu.classList.contains('hidden');
-
-        if (isHidden) {
-            // Open Menu
-            menu.classList.remove('hidden');
-            // Small delay to allow transition
-            setTimeout(() => {
-                menu.classList.remove('opacity-0', 'translate-y-2');
-                icon.classList.add('rotate-180');
-            }, 10);
-        } else {
-            // Close Menu
-            closeDropdown();
-        }
-    }
-
-    function closeDropdown() {
-        const menu = document.getElementById('dashboard-menu');
-        const icon = document.getElementById('dropdown-icon');
-        
-        menu.classList.add('opacity-0', 'translate-y-2');
-        icon.classList.remove('rotate-180');
-        
-        // Hide after animation finishes
-        setTimeout(() => {
-            menu.classList.add('hidden');
-        }, 300);
-    }
-
-    // Close menu when clicking anywhere else on the screen
-    window.addEventListener('click', function(e) {
-        const menu = document.getElementById('dashboard-menu');
-        const btn = document.getElementById('dashboard-btn');
-        
-        if (!menu.contains(e.target) && !btn.contains(e.target)) {
-            closeDropdown();
-        }
-    });
-
-    // Refresh icons
-    if (window.lucide) lucide.createIcons();
-</script>
+                    <button onclick="toggleDropdown(event)" 
+                            class="flex items-center gap-1 font-semibold hover:text-primary py-2 dark:text-slate-200 transition-colors focus:outline-none"
+                            id="dashboard-btn">
+                        Dashboard <i data-lucide="chevron-down" id="dropdown-icon" class="w-4 h-4 transition-transform duration-300"></i>
+                    </button>
+                    
+                    <div id="dashboard-menu" 
+                         class="absolute right-0 mt-2 w-56 bg-white dark:bg-slate-900 border dark:border-slate-800 rounded-[1.2rem] shadow-2xl hidden opacity-0 translate-y-2 transition-all duration-300 overflow-hidden z-[100]">
+                        <div class="p-2 space-y-1">
+                            <a href="user.html" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:text-primary transition-all font-medium dark:text-slate-200">
+                                <i data-lucide="user" class="w-4 h-4"></i> Profile Settings
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div class="flex items-center gap-3">
+            <div class="flex items-center gap-2 lg:gap-3">
                 <button onclick="toggleTheme()" class="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-blue-400 hover:scale-110 transition">
-                    <i data-lucide="sun" id="sun-icon" class="hidden"></i>
-                    <i data-lucide="moon" id="moon-icon"></i>
+                    <i data-lucide="sun" id="sun-icon" class="hidden w-5 h-5"></i>
+                    <i data-lucide="moon" id="moon-icon" class="w-5 h-5"></i>
                 </button>
+                
                 <button onclick="toggleDirection()" class="hidden md:flex items-center justify-between gap-3 bg-slate-100 dark:bg-slate-800 rounded-2xl font-bold transition-all active:scale-95 px-3 py-2 text-sm lg:hover:ring-2 lg:hover:ring-primary/50">
                     <i data-lucide="languages" class="w-4 h-4 text-primary"></i>
                     <span id="dir-label" class="bg-primary text-white text-[10px] px-2 py-0.5 rounded-full uppercase">LTR</span>
                 </button>
-                <a href="login.html">
-                 <button class="hidden lg:block bg-primary text-white px-6 py-2.5 rounded-xl font-bold hover:bg-blue-700 shadow-lg shadow-blue-500/20 transition">Register</button>
 
+                <a href="login.html" class="hidden lg:block">
+                    <button class="bg-primary text-white px-6 py-2.5 rounded-xl font-bold hover:bg-blue-700 shadow-lg shadow-blue-500/20 transition whitespace-nowrap">Register</button>
                 </a>
-                <button onclick="toggleMobileMenu()" class="lg:hidden p-2 dark:text-white">
-                    <i data-lucide="menu" id="menu-icon" class="w-7 h-7"></i>
+
+                <button onclick="toggleMobileMenu()" class="lg:hidden p-2 dark:text-white hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition">
+                    <i data-lucide="menu" id="menu-icon-mobile" class="w-7 h-7"></i>
                 </button>
             </div>
         </div>
     </div>
 
-  <div id="mobile-menu" class="hidden lg:hidden bg-white dark:bg-slate-900 border-t dark:border-slate-800 px-4 py-8 space-y-4 max-h-screen overflow-y-auto">
-    
-    <div class="flex gap-3 px-2 mb-4">
-        <button onclick="toggleTheme()" class="flex-1 flex items-center justify-center gap-3 p-4 bg-slate-100 dark:bg-slate-800 rounded-2xl font-bold transition-all active:scale-95 border border-transparent dark:border-slate-700">
-            <div class="flex items-center gap-2">
-                <i data-lucide="sun" class="sun-icon w-5 h-5 text-amber-500 hidden"></i>
-                <i data-lucide="moon" class="moon-icon w-5 h-5 text-blue-400"></i>
-                <span class="dark:text-white text-sm">Mode</span>
-            </div>
-        </button>
-
-        <button onclick="toggleDirection()" class="flex-1 flex items-center justify-center gap-3 p-4 bg-slate-100 dark:bg-slate-800 rounded-2xl font-bold transition-all active:scale-95 border border-transparent dark:border-slate-700">
-            <div class="flex items-center gap-2">
-                <i data-lucide="languages" class="w-5 h-5 text-primary"></i>
-                <span class="dir-status-label bg-primary text-white text-[10px] px-2 py-0.5 rounded-md uppercase font-black">LTR</span>
-            </div>
-        </button>
-    </div>
-
-    <div class="space-y-1">
-        <a href="index.html" class="nav-link-mob block text-xl font-bold px-4 py-3 rounded-xl border-b dark:border-slate-800 dark:text-white">Home</a>
-        <a href="home2.html" class="nav-link-mob block text-xl font-bold px-4 py-3 rounded-xl border-b dark:border-slate-800 dark:text-white">Home2</a>
-        <a href="booknow.html" class="nav-link-mob block text-xl font-bold px-4 py-3 rounded-xl border-b dark:border-slate-800 dark:text-white text-primary">Book Now</a>
-        <a href="aboutus.html" class="nav-link-mob block text-xl font-bold px-4 py-3 rounded-xl border-b dark:border-slate-800 dark:text-white">About Us</a>
-        <a href="service.html" class="nav-link-mob block text-xl font-bold px-4 py-3 rounded-xl border-b dark:border-slate-800 dark:text-white">Services</a>
-        <a href="pricing.html" class="nav-link-mob block text-xl font-bold px-4 py-3 rounded-xl border-b dark:border-slate-800 dark:text-white">Pricing</a>
-        <a href="contact.html" class="nav-link-mob block text-xl font-bold px-4 py-3 rounded-xl border-b dark:border-slate-800 dark:text-white">Contact</a>
-    </div>
-
-    <div class="bg-slate-50 dark:bg-slate-800/50 p-4 rounded-2xl border dark:border-slate-700">
-        <button onclick="document.getElementById('mob-dash').classList.toggle('hidden')" class="w-full flex justify-between items-center font-bold dark:text-white">
-            User Dashboard <i data-lucide="chevron-down" class="w-5 h-5"></i>
-        </button>
-        <div id="mob-dash" class="hidden pt-4 space-y-4 pl-4 border-l-2 border-primary mt-2">
-            <a href="user.html" class="nav-link-mob block text-slate-500 dark:text-slate-400">Account Info</a>
+    <div id="mobile-menu" class="hidden lg:hidden bg-white dark:bg-slate-900 border-t dark:border-slate-800 px-4 py-8 space-y-4 max-h-[calc(100vh-80px)] overflow-y-auto">
+        <div class="flex gap-3 px-2 mb-4">
+            <button onclick="toggleTheme()" class="flex-1 flex items-center justify-center gap-3 p-4 bg-slate-100 dark:bg-slate-800 rounded-2xl font-bold transition-all active:scale-95 border border-transparent dark:border-slate-700">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="sun" class="w-5 h-5 text-amber-500 hidden"></i>
+                    <i data-lucide="moon" class="w-5 h-5 text-blue-400"></i>
+                    <span class="dark:text-white text-sm">Mode</span>
+                </div>
+            </button>
+            <button onclick="toggleDirection()" class="flex-1 flex items-center justify-center gap-3 p-4 bg-slate-100 dark:bg-slate-800 rounded-2xl font-bold transition-all active:scale-95 border border-transparent dark:border-slate-700">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="languages" class="w-5 h-5 text-primary"></i>
+                    <span class="bg-primary text-white text-[10px] px-2 py-0.5 rounded-md uppercase font-black">LTR</span>
+                </div>
+            </button>
         </div>
-    </div>
 
-    <a href="login.html" class="block">
-        <button class="w-full bg-primary text-white py-4 rounded-2xl font-bold text-lg shadow-lg shadow-blue-500/20 mt-4 active:scale-95 transition-transform">Register</button>
-    </a>
-</div>
+        <div class="space-y-1">
+            <a href="index.html" class="nav-link-mob block text-xl font-bold px-4 py-3 rounded-xl border-b dark:border-slate-800 dark:text-white">Home</a>
+            <a href="home2.html" class="nav-link-mob block text-xl font-bold px-4 py-3 rounded-xl border-b dark:border-slate-800 dark:text-white">Home2</a>
+            <a href="booknow.html" class="nav-link-mob block text-xl font-bold px-4 py-3 rounded-xl border-b dark:border-slate-800 text-primary">Book Now</a>
+            <a href="aboutus.html" class="nav-link-mob block text-xl font-bold px-4 py-3 rounded-xl border-b dark:border-slate-800 dark:text-white">About Us</a>
+            <a href="service.html" class="nav-link-mob block text-xl font-bold px-4 py-3 rounded-xl border-b dark:border-slate-800 dark:text-white">Services</a>
+            <a href="pricing.html" class="nav-link-mob block text-xl font-bold px-4 py-3 rounded-xl border-b dark:border-slate-800 dark:text-white">Pricing</a>
+            <a href="contact.html" class="nav-link-mob block text-xl font-bold px-4 py-3 rounded-xl border-b dark:border-slate-800 dark:text-white">Contact</a>
+        </div>
+
+        <div class="bg-slate-50 dark:bg-slate-800/50 p-4 rounded-2xl border dark:border-slate-700">
+            <button onclick="document.getElementById('mob-dash').classList.toggle('hidden')" class="w-full flex justify-between items-center font-bold dark:text-white">
+                User Dashboard <i data-lucide="chevron-down" class="w-5 h-5"></i>
+            </button>
+            <div id="mob-dash" class="hidden pt-4 space-y-4 pl-4 border-l-2 border-primary mt-2">
+                <a href="user.html" class="nav-link-mob block text-slate-500 dark:text-slate-400">Account Info</a>
+            </div>
+        </div>
+
+        <a href="login.html" class="block">
+            <button class="w-full bg-primary text-white py-4 rounded-2xl font-bold text-lg shadow-lg mt-4">Register</button>
+        </a>
+    </div>
 </nav>
 <style>
     /* Styling for the Active Mobile Link */
