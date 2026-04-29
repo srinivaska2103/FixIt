@@ -129,6 +129,58 @@
         </a>
     </div>
 </nav>
+<script>
+    // --- Mobile Menu Toggle Logic ---
+    function toggleMobileMenu() {
+        const mobileMenu = document.getElementById('mobile-menu');
+        const isHidden = mobileMenu.classList.contains('hidden');
+        
+        if (isHidden) {
+            mobileMenu.classList.remove('hidden');
+            // Force reflow for potential animations
+        } else {
+            mobileMenu.classList.add('hidden');
+        }
+    }
+
+    // --- Desktop Dropdown Logic (Your Existing Logic) ---
+    function toggleDropdown(event) {
+        event.stopPropagation();
+        const menu = document.getElementById('dashboard-menu');
+        const icon = document.getElementById('dropdown-icon');
+        const isHidden = menu.classList.contains('hidden');
+
+        if (isHidden) {
+            menu.classList.remove('hidden');
+            setTimeout(() => {
+                menu.classList.remove('opacity-0', 'translate-y-2');
+                icon.classList.add('rotate-180');
+            }, 10);
+        } else {
+            closeDropdown();
+        }
+    }
+
+    function closeDropdown() {
+        const menu = document.getElementById('dashboard-menu');
+        const icon = document.getElementById('dropdown-icon');
+        if(!menu) return;
+        menu.classList.add('opacity-0', 'translate-y-2');
+        icon.classList.remove('rotate-180');
+        setTimeout(() => { menu.classList.add('hidden'); }, 300);
+    }
+
+    window.addEventListener('click', function(e) {
+        const menu = document.getElementById('dashboard-menu');
+        const btn = document.getElementById('dashboard-btn');
+        if (menu && !menu.contains(e.target) && !btn.contains(e.target)) {
+            closeDropdown();
+        }
+    });
+
+    // Initialize Icons
+    if (window.lucide) lucide.createIcons();
+</script>
 <style>
     /* Styling for the Active Mobile Link */
 .nav-link-mob.active {
